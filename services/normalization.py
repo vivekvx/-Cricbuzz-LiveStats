@@ -71,8 +71,10 @@ def normalize_matches(payload):
     return result
 
 
-def normalize_scorecard(payload):
+def normalize_scorecard(payload, teams=None):
     """Return validated innings; scorecard batting order follows provider batId."""
+    if "scorecard" in payload:
+        return normalize_current_scorecard(payload, teams)
     cards = payload.get("scoreCard")
     if not isinstance(cards, list):
         raise ApiError("Scorecard unavailable or incompatible v1 scoreCard schema.", "schema")
@@ -93,7 +95,7 @@ def normalize_scorecard(payload):
                         "balls": int(value.get("balls", 0)),
                         "dismissed": int(
                             str(value.get("outDesc", "")).lower()
-                            not in ("", "not out", "retired hurt")
+                            not in ("", "not out", "batting", "retired hurt")
                         ),
                     }
                 )
@@ -122,4 +124,70 @@ def normalize_scorecard(payload):
             )
     except (KeyError, TypeError, ValueError):
         raise ApiError("Invalid v1 scorecard fields. Nothing was imported.", "schema") from None
+    return result
+
+
+def normalize_current_scorecard(payload, teams):
+    """Parse the authenticated current lowercase scorecard response.
+
+    Current cards identify sides by name, so resolve only against the two
+    stored match teams. Do not guess missing IDs or count did-not-bat rows.
+    """
+    cards = payload.get("scorecard")
+    if not isinstance(cards, list):
+        raise ApiError("Current scorecard must contain an innings list.", "schema")
+    team_lookup = {str(name).casefold(): int(tid) for name, tid in (teams or {}).items()}
+    result = []
+    try:
+        for card in cards:
+            batting_team = team_lookup[str(card["batteamname"]).casefold()]
+            opposing = set(team_lookup.values()) - {batting_team}
+            if len(opposing) != 1:
+                raise ValueError("Cannot identify opposing match team")
+            batters = []
+            for position, value in enumerate(card["batsman"], 1):
+                out = str(value.get("outdec", "")).strip().lower()
+                balls, runs = int(value["balls"]), int(value["runs"])
+                batters.append(
+                    {
+                        "id": int(value["id"]),
+                        "name": value["name"],
+                        "position": position,
+                        "runs": runs,
+                        "balls": balls,
+                        "dismissed": int(out not in ("", "not out", "batting", "retired hurt")),
+                        "did_not_bat": not out and balls == 0 and runs == 0,
+                    }
+                )
+            bowlers = [
+                {
+                    "id": int(value["id"]),
+                    "name": value["name"],
+                    "balls": int(value["balls"])
+                    if "balls" in value
+                    else overs_to_balls(value["overs"]),
+                    "runs": int(value["runs"]),
+                    "wickets": int(value["wickets"]),
+                }
+                for value in card["bowler"]
+            ]
+            result.append(
+                {
+                    "number": int(card["inningsid"]),
+                    "bat_team": batting_team,
+                    "bowl_team": opposing.pop(),
+                    "runs": int(card["score"]),
+                    "wickets": int(card["wickets"]),
+                    "balls": int(card["ballnbr"])
+                    if "ballnbr" in card
+                    else overs_to_balls(card["overs"]),
+                    "batters": batters,
+                    "bowlers": bowlers,
+                }
+            )
+    except (KeyError, TypeError, ValueError):
+        raise ApiError(
+            "Current scorecard fields or match-team names could not be validated. Nothing imported.",
+            "schema",
+        ) from None
     return result

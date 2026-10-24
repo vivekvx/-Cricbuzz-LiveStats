@@ -21,3 +21,16 @@ def overs_to_balls(overs):
 
 def balls_to_overs(balls):
     return f"{balls // 6}.{balls % 6}"
+
+
+def provider_overs_display(value):
+    """Canonicalize the provider's observed .6 over-end notation."""
+    try:
+        number = Decimal(str(value))
+        whole = int(number)
+        part = (number - whole) * 10
+        if number < 0 or part != int(part) or not 0 <= part <= 6:
+            return str(value)
+        return balls_to_overs(whole * 6 + int(part))
+    except (InvalidOperation, ValueError, TypeError, OverflowError):
+        return str(value)

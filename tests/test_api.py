@@ -174,3 +174,55 @@ def test_international_vs_domestic_t20(payload):
     assert normalize_matches(payload)[0]["format"] == "T20I"
     group["matchType"] = "League"
     assert normalize_matches(payload)[0]["format"] == "T20"
+
+
+def test_captured_current_scorecard(tmp_path, payload):
+    current = json.loads((FIXTURES / "current_scorecard.json").read_text())
+    from services.normalization import normalize_current_scorecard
+
+    teams = {"New Zealand": 13, "India": 2}
+    cards = normalize_current_scorecard(current, teams)
+    assert [c["runs"] for c in cards] == [180, 127]
+    assert [c["balls"] for c in cards] == [120, 97]
+    assert [sum(p["dismissed"] for p in c["batters"]) for c in cards] == [5, 6]
+    assert cards[0]["bat_team"] == 13 and cards[0]["bowl_team"] == 2
+    assert sum(not p["did_not_bat"] for c in cards for p in c["batters"]) == 15
+    assert sum(len(c["bowlers"]) for c in cards) == 12
+    with pytest.raises(ApiError, match="team names"):
+        normalize_current_scorecard(current, {"Unrelated": 1, "India": 2})
+    path = tmp_path / "live.sqlite3"
+    initialize(path)
+    match = payload["typeMatches"][0]["seriesMatches"][1]["seriesAdWrapper"]["matches"][0][
+        "matchInfo"
+    ]
+    match["matchId"] = 161201
+    match["team1"] = {"teamId": 13, "teamName": "New Zealand"}
+    match["team2"] = {"teamId": 2, "teamName": "India"}
+    ingest_matches(path, payload)
+    ingest_scorecard(path, 161201, current)
+    ingest_scorecard(path, 161201, current)
+    assert len(read_query(path, "SELECT * FROM batting")) == 15
+    assert len(read_query(path, "SELECT * FROM bowling")) == 12
+
+
+def test_profile_null_bowling_style_and_keeper_role(tmp_path):
+    path = tmp_path / "live.sqlite3"
+    initialize(path)
+    c = Mock()
+    c.get.side_effect = [
+        {
+            "name": "Fixture Keeper",
+            "fullName": "Fixture Full Keeper",
+            "role": "WK-Batsman",
+            "intlTeam": "India",
+            "bat": "Right Handed Bat",
+            "bowl": None,
+        },
+        {"headers": ["ROWHEADER", "ODI"], "values": [{"values": ["Runs", "100"]}]},
+        {"headers": ["ROWHEADER", "ODI"], "values": [{"values": ["Wickets", "0"]}]},
+    ]
+    fetch_player(path, c, 12345)
+    player = read_query(path, "SELECT * FROM players")[0]
+    assert player["role"] == "Wicket-keeper"
+    assert player["bowling_style"] == "Unknown"
+    assert player["full_name"] == "Fixture Full Keeper"

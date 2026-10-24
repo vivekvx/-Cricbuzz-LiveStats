@@ -23,3 +23,12 @@ def test_cricket_math():
 def test_invalid_overs(value):
     with pytest.raises(ValueError):
         overs_to_balls(value)
+
+
+def test_provider_over_end_notation():
+    from analytics.calculations import provider_overs_display
+
+    assert provider_overs_display("19.6") == "20.0"
+    assert provider_overs_display("15.6") == "16.0"
+    assert provider_overs_display("0.5") == "0.5"
+    assert provider_overs_display("—") == "—"

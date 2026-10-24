@@ -35,15 +35,20 @@ def fetch_player(path, client, provider_id):
         if c.execute("SELECT 1 FROM metadata WHERE key='seed_version'").fetchone():
             raise ValueError("Provider ingestion requires a separate live database.")
         role = profile.get("role", "")
+        role = {
+            "WK-Batsman": "Wicket-keeper",
+            "Batting Allrounder": "All-rounder",
+            "Bowling Allrounder": "All-rounder",
+        }.get(role, role)
         role = role if role in ("Batsman", "Bowler", "All-rounder", "Wicket-keeper") else "Unknown"
         c.execute(
             "INSERT INTO players(full_name,country,role,batting_style,bowling_style,source,external_id) VALUES(?,?,?,?,?,?,?) ON CONFLICT(external_id) DO UPDATE SET full_name=excluded.full_name,country=excluded.country,role=excluded.role,batting_style=excluded.batting_style,bowling_style=excluded.bowling_style",
             (
-                profile["name"],
+                profile.get("fullName") or profile["name"],
                 profile.get("intlTeam", "Unknown"),
                 role,
-                profile.get("bat", "Unknown"),
-                profile.get("bowl", "Unknown"),
+                profile.get("bat") or "Unknown",
+                profile.get("bowl") or "Unknown",
                 "rapidapi-cricbuzz-v1",
                 provider_id,
             ),

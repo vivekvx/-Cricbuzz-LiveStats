@@ -1,4 +1,4 @@
-"""Cricbuzz Cricket v1 endpoint adapter (not the incompatible v2 API)."""
+"""Cricbuzz Cricket wire-path adapter; current authenticated responses are normalized separately."""
 
 from api.client import identifier
 

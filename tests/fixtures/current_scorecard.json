@@ -1,0 +1,278 @@
+{
+  "scorecard": [
+    {
+      "inningsid": 1,
+      "batteamname": "New Zealand",
+      "score": 180,
+      "wickets": 5,
+      "overs": 20.0,
+      "ballnbr": 120,
+      "batsman": [
+        {
+          "id": 9443,
+          "name": "Tim Seifert",
+          "balls": 6,
+          "runs": 7,
+          "outdec": "c Tilak Varma b Arshdeep Singh"
+        },
+        {
+          "id": 11172,
+          "name": "Finn Allen",
+          "balls": 14,
+          "runs": 16,
+          "outdec": "b Prince Yadav"
+        },
+        {
+          "id": 10713,
+          "name": "Daryl Mitchell",
+          "balls": 5,
+          "runs": 6,
+          "outdec": "c Tilak Varma b Bhuvneshwar Kumar"
+        },
+        {
+          "id": 10693,
+          "name": "Glenn Phillips",
+          "balls": 43,
+          "runs": 70,
+          "outdec": "c Naman Dhir b Arshdeep Singh"
+        },
+        {
+          "id": 52428,
+          "name": "Bevon Jacobs",
+          "balls": 46,
+          "runs": 58,
+          "outdec": "c Axar Patel b Nitish Reddy"
+        },
+        {
+          "id": 10100,
+          "name": "Mitchell Santner",
+          "balls": 5,
+          "runs": 4,
+          "outdec": "not out"
+        },
+        {
+          "id": 9551,
+          "name": "Michael Bracewell",
+          "balls": 2,
+          "runs": 10,
+          "outdec": "not out"
+        },
+        {
+          "id": 11170,
+          "name": "Nathan Smith",
+          "balls": 0,
+          "runs": 0,
+          "outdec": ""
+        },
+        {
+          "id": 9067,
+          "name": "Matt Henry",
+          "balls": 0,
+          "runs": 0,
+          "outdec": ""
+        },
+        {
+          "id": 8554,
+          "name": "Jacob Duffy",
+          "balls": 0,
+          "runs": 0,
+          "outdec": ""
+        },
+        {
+          "id": 10692,
+          "name": "Lockie Ferguson",
+          "balls": 0,
+          "runs": 0,
+          "outdec": ""
+        }
+      ],
+      "bowler": [
+        {
+          "id": 1726,
+          "name": "Bhuvneshwar Kumar",
+          "balls": 24,
+          "overs": "4",
+          "runs": 50,
+          "wickets": 1
+        },
+        {
+          "id": 13217,
+          "name": "Arshdeep Singh",
+          "balls": 24,
+          "overs": "4",
+          "runs": 33,
+          "wickets": 2
+        },
+        {
+          "id": 54735,
+          "name": "Prince Yadav",
+          "balls": 24,
+          "overs": "4",
+          "runs": 30,
+          "wickets": 1
+        },
+        {
+          "id": 36139,
+          "name": "Naman Dhir",
+          "balls": 6,
+          "overs": "1",
+          "runs": 7,
+          "wickets": 0
+        },
+        {
+          "id": 8808,
+          "name": "Axar Patel",
+          "balls": 24,
+          "overs": "4",
+          "runs": 28,
+          "wickets": 0
+        },
+        {
+          "id": 14701,
+          "name": "Nitish Kumar Reddy",
+          "balls": 18,
+          "overs": "3",
+          "runs": 31,
+          "wickets": 1
+        }
+      ]
+    },
+    {
+      "inningsid": 2,
+      "batteamname": "India",
+      "score": 127,
+      "wickets": 6,
+      "overs": 16.1,
+      "ballnbr": 97,
+      "batsman": [
+        {
+          "id": 8271,
+          "name": "Sanju Samson",
+          "balls": 17,
+          "runs": 14,
+          "outdec": "c Glenn Phillips b Jacob Duffy"
+        },
+        {
+          "id": 12086,
+          "name": "Abhishek Sharma",
+          "balls": 21,
+          "runs": 27,
+          "outdec": "c Nathan Smith b Mitchell Santner"
+        },
+        {
+          "id": 51791,
+          "name": "Vaibhav Sooryavanshi",
+          "balls": 8,
+          "runs": 4,
+          "outdec": "c Daryl Mitchell b Nathan Smith"
+        },
+        {
+          "id": 9428,
+          "name": "Shreyas Iyer",
+          "balls": 11,
+          "runs": 7,
+          "outdec": "b Mitchell Santner"
+        },
+        {
+          "id": 8808,
+          "name": "Axar Patel",
+          "balls": 9,
+          "runs": 11,
+          "outdec": "c Daryl Mitchell b Mitchell Santner"
+        },
+        {
+          "id": 14504,
+          "name": "Tilak Varma",
+          "balls": 9,
+          "runs": 10,
+          "outdec": "batting"
+        },
+        {
+          "id": 36139,
+          "name": "Naman Dhir",
+          "balls": 17,
+          "runs": 31,
+          "outdec": "c Glenn Phillips b Mitchell Santner"
+        },
+        {
+          "id": 14701,
+          "name": "Nitish Kumar Reddy",
+          "balls": 8,
+          "runs": 15,
+          "outdec": "batting"
+        },
+        {
+          "id": 1726,
+          "name": "Bhuvneshwar Kumar",
+          "balls": 0,
+          "runs": 0,
+          "outdec": ""
+        },
+        {
+          "id": 13217,
+          "name": "Arshdeep Singh",
+          "balls": 0,
+          "runs": 0,
+          "outdec": ""
+        },
+        {
+          "id": 54735,
+          "name": "Prince Yadav",
+          "balls": 0,
+          "runs": 0,
+          "outdec": ""
+        }
+      ],
+      "bowler": [
+        {
+          "id": 9067,
+          "name": "Matt Henry",
+          "balls": 12,
+          "overs": "2",
+          "runs": 11,
+          "wickets": 0
+        },
+        {
+          "id": 8554,
+          "name": "Jacob Duffy",
+          "balls": 12,
+          "overs": "2",
+          "runs": 13,
+          "wickets": 1
+        },
+        {
+          "id": 10692,
+          "name": "Lockie Ferguson",
+          "balls": 13,
+          "overs": "2.1",
+          "runs": 29,
+          "wickets": 0
+        },
+        {
+          "id": 9551,
+          "name": "Michael Bracewell",
+          "balls": 24,
+          "overs": "4",
+          "runs": 35,
+          "wickets": 0
+        },
+        {
+          "id": 11170,
+          "name": "Nathan Smith",
+          "balls": 12,
+          "overs": "2",
+          "runs": 16,
+          "wickets": 1
+        },
+        {
+          "id": 10100,
+          "name": "Mitchell Santner",
+          "balls": 24,
+          "overs": "4",
+          "runs": 21,
+          "wickets": 4
+        }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 # Requirements traceability
-Primary source: supplied Cricbuzz.docx, extracted in full to ASSIGNMENT_SOURCE.txt. The pasted master prompt is supplemental. The only blocked verification is authenticated external-provider operation and account-specific access.
+Primary source: supplied Cricbuzz.docx, extracted in full to ASSIGNMENT_SOURCE.txt. The pasted master prompt is supplemental. Authenticated live-list, scorecard and player-stat operation was subsequently verified; account-specific quotas, broader endpoint entitlements and archive coverage remain unverified.
 | Requirement | Implementation | Verification |
 |---|---|---|
 | Home and four modules | main.py; ui.py; pages/ | tests/test_app.py; browser recording |
@@ -18,7 +18,7 @@ Primary source: supplied Cricbuzz.docx, extracted in full to ASSIGNMENT_SOURCE.t
 | Documentation, dependencies, configuration, reproducible demo | README.md; requirements*.txt; .env.example; docs/ | full suite, lint, browser recording |
 | Git version control | local Git repository | git status/log; credentials/database excluded |
 | Recording video | docs/demo.mp4; scripts/record_demo.py | actual browser recording and ffprobe verification |
-| Authenticated provider end-to-end test / exact plan entitlements | docs/API_SETUP.md | BLOCKED: no subscribed key; v1 account availability unverified |
+| Authenticated provider end-to-end test / exact plan entitlements | docs/API_SETUP.md | Authenticated list/scorecard/profile/career access verified; exact plan entitlements and archive coverage remain unverified |
 | Q1: Find all players who represent India. Display their full name, playing role, batting style, and bowling style. | analytics/sql/q01.sql; query_registry.py; ui.py | tests/test_queries.py::test_q01 checks expected answers |
 | Q2: Show all cricket matches that were played in the last 30 days. Include the match description, both team names, venue name with city, and the match date. Sort by most recent matches first. | analytics/sql/q02.sql; query_registry.py; ui.py | tests/test_queries.py::test_q02 checks expected answers |
 | Q3: List the top 10 highest run scorers in ODI cricket. Show player name, total runs scored, batting average, and number of centuries. Display the highest run scorer first. | analytics/sql/q03.sql; query_registry.py; ui.py | tests/test_queries.py::test_q03 checks expected answers |

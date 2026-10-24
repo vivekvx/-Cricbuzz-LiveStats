@@ -1,6 +1,6 @@
 # Demonstration script
 
-Use Sample Data throughout this credential-free demo. Say explicitly that every player and score is synthetic. Do not describe any synthetic card as a live match. The separate Live API module requires a subscribed compatible key; never display the key during recording.
+Use Sample Data throughout this credential-free demo. Say explicitly that every player and score is synthetic. Do not describe any synthetic card as a live match. A subscribed key is now configured locally and Live API access has been verified; the distributed ZIP omits that key. Never display it during recording.
 
 1. Start `streamlit run main.py` from the activated project environment. Open localhost:8501.
 2. **Home:** explain the REST → Python → SQLite → Streamlit flow, inspect initialization status and counts. Point out the source selector and fixed demo reference date.

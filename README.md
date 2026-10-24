@@ -2,7 +2,7 @@
 
 A complete local Python/Streamlit cricket analytics assignment: five pages, 25 executable SQLite questions, persistent player and match-statistic CRUD, API ingestion and a reproducible synthetic-data demonstration.
 
-**Status:** Sample mode is runnable without credentials. API client/adapters are fixture-tested; authenticated live operation is pending a subscribed, compatible Cricbuzz Cricket v1 RapidAPI key. No real player statistics are invented. See [API access limitations](docs/API_SETUP.md).
+**Status:** Both sample mode and authenticated API mode have been verified locally. The provided key is configured privately in the ignored `.env` file. Live verification imported eight provider-listed matches, a two-innings scorecard, and a player profile with career tables. The submission ZIP excludes credentials. See [API verification](docs/LIVE_VERIFICATION.md).
 
 ## Features
 

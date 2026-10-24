@@ -70,8 +70,14 @@ def ingest_matches(path, payload, category="live"):
 
 
 def ingest_scorecard(path, match_id, payload):
-    cards = normalize_scorecard(payload)
     with connect(path) as c:
+        teams = dict(
+            c.execute(
+                "SELECT t.name,t.id FROM teams t JOIN matches m ON t.id IN (m.team1_id,m.team2_id) WHERE m.id=?",
+                (match_id,),
+            ).fetchall()
+        )
+        cards = normalize_scorecard(payload, teams)
         if c.execute("SELECT 1 FROM metadata WHERE key='seed_version'").fetchone():
             raise ValueError("Provider ingestion requires a separate, unseeded live database.")
         for card in cards:
@@ -95,7 +101,7 @@ def ingest_scorecard(path, match_id, payload):
             for kind, team in [("batters", card["bat_team"]), ("bowlers", card["bowl_team"])]:
                 for p in card[kind]:
                     c.execute(
-                        "INSERT INTO players(full_name,country,role,batting_style,bowling_style,source,external_id) VALUES(?,?,'Unknown','Unknown','Unknown',?,?) ON CONFLICT(external_id) DO UPDATE SET full_name=excluded.full_name",
+                        "INSERT INTO players(full_name,country,role,batting_style,bowling_style,source,external_id) VALUES(?,?,'Unknown','Unknown','Unknown',?,?) ON CONFLICT(external_id) DO UPDATE SET full_name=CASE WHEN players.role='Unknown' THEN excluded.full_name ELSE players.full_name END",
                         (p["name"], "Unknown", "rapidapi-cricbuzz-v1", p["id"]),
                     )
                     pid = c.execute(
@@ -104,6 +110,8 @@ def ingest_scorecard(path, match_id, payload):
                     c.execute(
                         "INSERT OR IGNORE INTO participants VALUES(?,?,?)", (match_id, pid, team)
                     )
+                    if kind == "batters" and p.get("did_not_bat"):
+                        continue
                     if kind == "batters":
                         c.execute(
                             "INSERT INTO batting VALUES(?,?,?,?,?,?)",

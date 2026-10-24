@@ -4,7 +4,7 @@ Completed locally on 24 October 2026 using Python 3.11, SQLite, Streamlit 1.50.0
 
 ## Automated verification
 
-Final full run: **84 passed in 2.07 seconds** using `.venv/bin/python -m pytest -q`.
+Final full run: **87 passed in 2.48 seconds** using `.venv/bin/python -m pytest -q`.
 
 - Every Q1–Q25 has an individual expected-answer test: rows, totals, means, eligibility, ranks or classes, rather than only checking execution.
 - All 25 also run against an empty database and return empty results gracefully.
@@ -25,6 +25,6 @@ Static verification: `ruff check .` passed; `ruff format --check .` reported all
 
 The browser recording was converted to `docs/demo.mp4`. FFprobe confirmed **H.264, 1440×1000, 41.64 seconds**, 1,758,676 bytes. It is a silent recording of actual UI interactions, not a mockup or a slideshow.
 
-## External verification boundary
+## Authenticated follow-up verification
 
-No subscribed RapidAPI key was supplied; no authenticated Cricbuzz response or account-specific entitlement was tested. Public provider operation discovery and legacy path cross-checking are recorded in API_SETUP.md. Test fixtures are synthetic examples, not captured API responses. Exact paid/free access, quotas, pagination/retention and continued v1 account availability remain externally blocked. Sample-mode completion and local API contract/error tests do not imply verified live-provider access.
+A user-provided key was subsequently configured privately and authenticated requests succeeded for live matches, a current scorecard, player profile and batting/bowling career tables. Eight real provider-listed matches, two innings, 15 batting rows, 12 bowling rows and six career format/discipline snapshots were stored in the separate live database. Current scorecard regression tests cover the captured response, team resolution, repeated ingestion, did-not-bat rows and dismissal status; nullable bowling styles and provider keeper-role mapping are also tested. See LIVE_VERIFICATION.md for exact scope. Exact plan entitlements, API quotas and complete historical coverage remain unverified.

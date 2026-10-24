@@ -5,7 +5,7 @@ import json
 import sqlite3
 import pandas as pd
 import streamlit as st
-from analytics.calculations import balls_to_overs
+from analytics.calculations import balls_to_overs, provider_overs_display
 from analytics.queries import execute
 from analytics.query_registry import ASSUMPTIONS, QUESTIONS
 from analytics.validations import ROLES
@@ -192,7 +192,7 @@ def match_centre():
                         for ino, value in scores.items():
                             if isinstance(value, dict):
                                 st.write(
-                                    f"{side} {ino}: {value.get('runs', '—')}/{value.get('wickets', '—')} ({value.get('overs', '—')} overs)"
+                                    f"{match['teams'][0 if side == 'team1Score' else 1]['teamName']} {ino}: {value.get('runs', '—')}/{value.get('wickets', '—')} ({provider_overs_display(value.get('overs', '—'))} overs)"
                                 )
         selected = st.selectbox("Match for scorecard", ids)
         if st.button("Fetch detailed scorecard"):

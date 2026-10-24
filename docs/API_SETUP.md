@@ -1,6 +1,6 @@
 # API setup and research record
 
-Research date: 24 October 2026. No API key was supplied. No authenticated live responses were fetched, and no claim of end-to-end live-provider verification is made.
+Research date: 24 October 2026. Initial research ran without credentials. A key was subsequently supplied and authenticated match-list, current scorecard, profile and career-table access succeeded. See [live verification](LIVE_VERIFICATION.md). Account quotas, plan entitlements and archive coverage remain unverified.
 
 ## Selected adapter
 
@@ -14,7 +14,7 @@ Primary provider references:
 - [Selected provider pricing](https://rapidapi.com/cricketapilive/api/cricbuzz-cricket/pricing): the unauthenticated page did not expose usable pricing during research. Exact quota, request rate, per-endpoint entitlements and continued v1 access remain **unverified**. Check your subscribed account. Do not copy quotas from another similarly named API.
 - [RapidAPI subscription documentation](https://docs.rapidapi.com/v2/docs/api-pricing): subscriptions and billing depend on the provider's plan.
 
-The legacy wire paths below are cross-checked against the published [v1 generated endpoint reference](https://pypi.org/project/bach-cricbuzz-cricket/) and community integrations. They are **not authenticated availability guarantees**. Direct retrieval of the RapidAPI playground returned HTTP 403 in this environment. Public operation discovery was possible through indexed documentation; authenticated OpenAPI export and response verification were not possible.
+The legacy wire paths below are cross-checked against the published [v1 generated endpoint reference](https://pypi.org/project/bach-cricbuzz-cricket/) and community integrations. The live-list, scorecard and player endpoints were subsequently authenticated successfully; series and venue adapters remain fixture-only. Direct retrieval of the RapidAPI playground returned HTTP 403 in this environment. Public operation discovery was possible through indexed documentation; authenticated OpenAPI export was not available during initial research. Response verification was subsequently completed for the five paths listed in LIVE_VERIFICATION.md.
 
 | Resource | Implemented legacy wire path | UI use / limits |
 |---|---|---|
@@ -43,4 +43,4 @@ HTTPS only; no redirects forwarding credential headers. Five-second connection a
 
 ## Parsing limits
 
-Fixtures under `tests/fixtures/` are **synthetic contract examples**, not recorded Cricbuzz responses. Scorecard batting position follows the provider's returned batsmen sequence, which should be checked against a real response before using live consecutive-position analytics. A profile fills unknown styles/role/country only when supplied. Career API tables are preserved separately and displayed as fetched; they are never added to scorecard-derived totals, which would double count performance. Fielding and actual stand-by-stand partnership data are not fabricated.
+The original fixtures are synthetic contract examples. `current_scorecard.json` is a minimal projection of the authenticated current scorecard; PROVENANCE.md identifies its source. Both legacy scoreCard and observed current lowercase scorecard structures are supported. Current cards resolve batting-team names against stored match teams, preserve zero-ball dismissals, exclude did-not-bat rows from batting performances, and treat "batting" as not dismissed. Positions follow the returned batter sequence; partnership results remain proxies. A profile fills unknown styles/role/country only when supplied. Career API tables are preserved separately and displayed as fetched; they are never added to scorecard-derived totals, which would double count performance. Fielding and actual stand-by-stand partnership data are not fabricated.
