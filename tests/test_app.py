@@ -73,3 +73,10 @@ def test_match_statistics_form(app_data):
     next(r for r in at.radio if r.label == "Statistics").set_value("Bowling").run()
     assert not at.exception
     assert len(at.dataframe[0].value) == 2
+
+
+def test_hosted_demo_discloses_shared_temporary_storage(app_data, monkeypatch):
+    monkeypatch.setattr(ui, "cloud_deployment", lambda: True)
+    at = AppTest.from_file(str(ROOT / "main.py")).run()
+    assert not at.exception
+    assert any("database edits are shared" in item.value for item in at.sidebar.info)

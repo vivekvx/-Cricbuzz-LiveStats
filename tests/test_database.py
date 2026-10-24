@@ -67,3 +67,13 @@ def test_sql_only_seed_reproducible(tmp_path):
         assert c.execute("SELECT COUNT(*) FROM matches").fetchone()[0] == 60
         assert c.execute("SELECT COUNT(*) FROM batting").fetchone()[0] == 480
         assert c.execute("PRAGMA foreign_key_check").fetchall() == []
+
+
+def test_simultaneous_first_visitors_seed_once(tmp_path):
+    from concurrent.futures import ThreadPoolExecutor
+
+    path = tmp_path / "concurrent.sqlite3"
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        list(pool.map(seed, [path] * 6))
+    assert read_query(path, "SELECT COUNT(*) n FROM matches")[0]["n"] == 60
+    assert read_query(path, "SELECT COUNT(*) n FROM players")[0]["n"] == 8

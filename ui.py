@@ -11,7 +11,7 @@ from analytics.query_registry import ASSUMPTIONS, QUESTIONS
 from analytics.validations import ROLES
 from api.client import ApiError, Client
 from api.matches import match_list, scorecard
-from config import ROOT, api_key, database_path
+from config import ROOT, api_key, database_path, cloud_deployment
 from database import repository as repo
 from database.connection import initialize, read_query
 from database.seed import DEMO_DATE, seed
@@ -50,6 +50,10 @@ def setup(title):
         key=f"as_of_{mode}",
     ).isoformat()
     st.sidebar.caption("Manual refresh · No automatic polling")
+    if cloud_deployment():
+        st.sidebar.info(
+            "Hosted demo: database edits are shared with other viewers and may reset. Export important results as CSV."
+        )
     return path, mode, as_of
 
 

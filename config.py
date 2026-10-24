@@ -29,3 +29,16 @@ def api_key():
         return st.secrets.get("RAPIDAPI_KEY", "")
     except (FileNotFoundError, RuntimeError):
         return ""
+
+
+def cloud_deployment():
+    """Explicit hosting flag, configurable in environment or Cloud secrets."""
+    value = os.getenv("DEPLOYMENT_ENV")
+    if value is None:
+        try:
+            import streamlit as st
+
+            value = st.secrets.get("DEPLOYMENT_ENV", "local")
+        except (FileNotFoundError, RuntimeError):
+            value = "local"
+    return str(value).lower() == "community-cloud"

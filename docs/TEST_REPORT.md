@@ -4,7 +4,7 @@ Completed locally on 24 October 2026 using Python 3.11, SQLite, Streamlit 1.50.0
 
 ## Automated verification
 
-Final full run: **92 passed in 2.69 seconds** using `.venv/bin/python -m pytest -q`.
+Final full run: **97 passed in 2.78 seconds** using `.venv/bin/python -m pytest -q`.
 
 - Every Q1–Q25 has an individual expected-answer test: rows, totals, means, eligibility, ranks or classes, rather than only checking execution.
 - All 25 also run against an empty database and return empty results gracefully.
@@ -17,7 +17,7 @@ Final full run: **92 passed in 2.69 seconds** using `.venv/bin/python -m pytest 
 - SQL security tests reject writes, DDL, PRAGMA, ATTACH, extension loading, multiple statements and write CTEs; valid read CTEs work. Row limits and bounded recursive-query execution are tested.
 - Streamlit AppTest checks all five pages, live missing-key state without sample fallback, SQL execution/rejection, persisted create forms and batting/bowling management forms.
 
-Static verification: `ruff check .` passed; `ruff format --check .` reported all 37 Python files formatted. No test or lint failure remains in the final run.
+Static verification: `ruff check .` passed; `ruff format --check .` reported all 38 Python files formatted. No test or lint failure remains in the final run.
 
 ## Actual browser verification
 
@@ -32,3 +32,7 @@ A user-provided key was subsequently configured privately and authenticated requ
 ## Subsequent compliance audit
 
 See COMPLIANCE_AUDIT.md for corrected Q12/Q16/Q23/Q25 semantics and five new regression cases. The current final run has 92 passing tests.
+
+## Community Cloud preparation
+
+The current run has 97 passing tests, including secrets configuration, hosted-storage disclosure and concurrent first-visitor seeding. Dependency compatibility (`pip check`) also passes. See STREAMLIT_DEPLOYMENT.md for repository values and the Ubuntu GitHub Actions verification.

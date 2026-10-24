@@ -10,6 +10,8 @@ def seed(path):
     """Seed once, transactionally; do not resurrect user-deleted records."""
     initialize(path)
     with connect(path) as c:
+        # Serialize the seed-marker check and inserts across first-time visitors.
+        c.execute("BEGIN IMMEDIATE")
         if c.execute("SELECT 1 FROM metadata WHERE key='seed_version'").fetchone():
             return
         c.executemany(
