@@ -4,7 +4,7 @@ Completed locally on 24 October 2026 using Python 3.11, SQLite, Streamlit 1.50.0
 
 ## Automated verification
 
-Final full run: **113 passed in 2.28 seconds** using `.venv/bin/python -m pytest -q`.
+Final full run: **118 passed in 2.68 seconds** using `.venv/bin/python -m pytest -q`.
 
 - Every Q1–Q25 has an individual expected-answer test: rows, totals, means, eligibility, ranks or classes, rather than only checking execution.
 - All 25 also run against an empty database and return empty results gracefully.
@@ -17,7 +17,7 @@ Final full run: **113 passed in 2.28 seconds** using `.venv/bin/python -m pytest
 - SQL security tests reject writes, DDL, PRAGMA, ATTACH, extension loading, multiple statements and write CTEs; valid read CTEs work. Row limits and bounded recursive-query execution are tested.
 - Streamlit AppTest checks all five pages, live missing-key state without sample fallback, SQL execution/rejection, persisted create forms and batting/bowling management forms.
 
-Static verification: `ruff check .` passed; `ruff format --check .` reported all 44 Python files formatted. No test or lint failure remains in the final run.
+Static verification: `ruff check .` passed; `ruff format --check .` reported all 46 Python files formatted. No test or lint failure remains in the final run.
 
 ## Actual browser verification
 
@@ -54,3 +54,7 @@ New regressions cover real three-format cards, domestic/unofficial/warm-up exclu
 ## Hosted Python 3.14 chart compatibility
 
 Browser verification exposed a crash when Streamlit’s bar-chart wrapper imported Altair’s schema on the deployed Python 3.14 runtime. The player chart now uses Streamlit’s direct Vega-Lite specification, preserving the bar chart and tooltip without importing Altair. A regression blocks Altair imports and verifies the chart and comparison section still render. CI now tests Python 3.11 and 3.14.
+
+## Repeated empty SQL results
+
+See SQL_DATA_COVERAGE.md. Hosted SQL confirmed nine listed matches but only one imported scorecard. All 25 statements were checked locally: 15 live queries were empty, while all 25 sample queries returned rows. Five new regressions cover explanatory empty states, actual Q9/Q16 evidence, all-query status/error distinction and explicit sample switching. This corrects the earlier distinction between calculation correctness and historical data readiness.

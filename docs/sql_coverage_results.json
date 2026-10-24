@@ -1,0 +1,330 @@
+{
+  "Live API": {
+    "coverage": {
+      "listed_matches": 8,
+      "scorecard_matches": 1,
+      "players": 22,
+      "batting_rows": 15,
+      "unknown_roles": 21,
+      "known_capacities": 0,
+      "series_records": 0,
+      "career_tables": 6
+    },
+    "questions": [
+      {
+        "Question": "Q1",
+        "Rows": 0,
+        "Status": "No qualifying rows",
+        "Data needed": "Player profiles with country represented set to India."
+      },
+      {
+        "Question": "Q2",
+        "Rows": 8,
+        "Status": "Has results",
+        "Data needed": "Live/completed match dates within the selected last 30 days."
+      },
+      {
+        "Question": "Q3",
+        "Rows": 0,
+        "Status": "No qualifying rows",
+        "Data needed": "Imported ODI batting scorecards; profile career tables are separate."
+      },
+      {
+        "Question": "Q4",
+        "Rows": 0,
+        "Status": "No qualifying rows",
+        "Data needed": "Venue capacity metadata greater than 50,000."
+      },
+      {
+        "Question": "Q5",
+        "Rows": 16,
+        "Status": "Has results",
+        "Data needed": "Teams and completed matches with recognized winners."
+      },
+      {
+        "Question": "Q6",
+        "Rows": 2,
+        "Status": "Has results",
+        "Data needed": "Player records with playing roles; Unknown is a separate group."
+      },
+      {
+        "Question": "Q7",
+        "Rows": 1,
+        "Status": "Has results",
+        "Data needed": "Imported Test, ODI or T20I batting innings."
+      },
+      {
+        "Question": "Q8",
+        "Rows": 0,
+        "Status": "No qualifying rows",
+        "Data needed": "Series metadata with a start date in 2024."
+      },
+      {
+        "Question": "Q9",
+        "Rows": 0,
+        "Status": "No qualifying rows",
+        "Data needed": "Known all-rounders with more than 1,000 runs AND 50 wickets in one format's imported scorecards."
+      },
+      {
+        "Question": "Q10",
+        "Rows": 2,
+        "Status": "Has results",
+        "Data needed": "Completed match records (up to the most recent 20)."
+      },
+      {
+        "Question": "Q11",
+        "Rows": 0,
+        "Status": "No qualifying rows",
+        "Data needed": "The same player represented in at least two international formats' scorecards."
+      },
+      {
+        "Question": "Q12",
+        "Rows": 0,
+        "Status": "No qualifying rows",
+        "Data needed": "Completed matches with known team countries and venue countries."
+      },
+      {
+        "Question": "Q13",
+        "Rows": 1,
+        "Status": "Has results",
+        "Data needed": "Adjacent batting positions whose combined innings scores are at least 100 (proxy only)."
+      },
+      {
+        "Question": "Q14",
+        "Rows": 0,
+        "Status": "No qualifying rows",
+        "Data needed": "At least three matches per bowler at a venue, each with at least 24 legal balls."
+      },
+      {
+        "Question": "Q15",
+        "Rows": 0,
+        "Status": "No qualifying rows",
+        "Data needed": "Batting scorecards for wins by fewer than 50 runs or five wickets."
+      },
+      {
+        "Question": "Q16",
+        "Rows": 0,
+        "Status": "No qualifying rows",
+        "Data needed": "At least five recorded match appearances for the same player in one year since 2020."
+      },
+      {
+        "Question": "Q17",
+        "Rows": 0,
+        "Status": "No qualifying rows",
+        "Data needed": "Completed decisive matches with toss winner and bat/bowl decision imported."
+      },
+      {
+        "Question": "Q18",
+        "Rows": 0,
+        "Status": "No qualifying rows",
+        "Data needed": "At least ten ODI/T20I/T20 bowling matches per player and an average of two overs per match."
+      },
+      {
+        "Question": "Q19",
+        "Rows": 7,
+        "Status": "Has results",
+        "Data needed": "Batting innings since 2022 with at least ten balls faced."
+      },
+      {
+        "Question": "Q20",
+        "Rows": 0,
+        "Status": "No qualifying rows",
+        "Data needed": "At least 20 recorded appearances per player in Test, ODI, T20I or T20."
+      },
+      {
+        "Question": "Q21",
+        "Rows": 22,
+        "Status": "Has results",
+        "Data needed": "Imported scorecard performances; missing fielding produces only a partial ranking."
+      },
+      {
+        "Question": "Q22",
+        "Rows": 0,
+        "Status": "No qualifying rows",
+        "Data needed": "At least five completed meetings of a team pair in the selected trailing three years."
+      },
+      {
+        "Question": "Q23",
+        "Rows": 15,
+        "Status": "Has results",
+        "Data needed": "Imported batting matches; fewer than ten matches produce a limited-sample form result."
+      },
+      {
+        "Question": "Q24",
+        "Rows": 0,
+        "Status": "No qualifying rows",
+        "Data needed": "The same adjacent-position batting pair in at least five innings (proxy only)."
+      },
+      {
+        "Question": "Q25",
+        "Rows": 0,
+        "Status": "No qualifying rows",
+        "Data needed": "Six qualifying quarters per player in the trailing three years, with at least three appearances per quarter."
+      }
+    ]
+  },
+  "Sample Data": {
+    "coverage": {
+      "listed_matches": 60,
+      "scorecard_matches": 60,
+      "players": 8,
+      "batting_rows": 480,
+      "unknown_roles": 0,
+      "known_capacities": 2,
+      "series_records": 1,
+      "career_tables": 0
+    },
+    "questions": [
+      {
+        "Question": "Q1",
+        "Rows": 4,
+        "Status": "Has results",
+        "Data needed": "Player profiles with country represented set to India."
+      },
+      {
+        "Question": "Q2",
+        "Rows": 6,
+        "Status": "Has results",
+        "Data needed": "Live/completed match dates within the selected last 30 days."
+      },
+      {
+        "Question": "Q3",
+        "Rows": 8,
+        "Status": "Has results",
+        "Data needed": "Imported ODI batting scorecards; profile career tables are separate."
+      },
+      {
+        "Question": "Q4",
+        "Rows": 1,
+        "Status": "Has results",
+        "Data needed": "Venue capacity metadata greater than 50,000."
+      },
+      {
+        "Question": "Q5",
+        "Rows": 2,
+        "Status": "Has results",
+        "Data needed": "Teams and completed matches with recognized winners."
+      },
+      {
+        "Question": "Q6",
+        "Rows": 4,
+        "Status": "Has results",
+        "Data needed": "Player records with playing roles; Unknown is a separate group."
+      },
+      {
+        "Question": "Q7",
+        "Rows": 3,
+        "Status": "Has results",
+        "Data needed": "Imported Test, ODI or T20I batting innings."
+      },
+      {
+        "Question": "Q8",
+        "Rows": 1,
+        "Status": "Has results",
+        "Data needed": "Series metadata with a start date in 2024."
+      },
+      {
+        "Question": "Q9",
+        "Rows": 6,
+        "Status": "Has results",
+        "Data needed": "Known all-rounders with more than 1,000 runs AND 50 wickets in one format's imported scorecards."
+      },
+      {
+        "Question": "Q10",
+        "Rows": 20,
+        "Status": "Has results",
+        "Data needed": "Completed match records (up to the most recent 20)."
+      },
+      {
+        "Question": "Q11",
+        "Rows": 8,
+        "Status": "Has results",
+        "Data needed": "The same player represented in at least two international formats' scorecards."
+      },
+      {
+        "Question": "Q12",
+        "Rows": 4,
+        "Status": "Has results",
+        "Data needed": "Completed matches with known team countries and venue countries."
+      },
+      {
+        "Question": "Q13",
+        "Rows": 348,
+        "Status": "Has results",
+        "Data needed": "Adjacent batting positions whose combined innings scores are at least 100 (proxy only)."
+      },
+      {
+        "Question": "Q14",
+        "Rows": 12,
+        "Status": "Has results",
+        "Data needed": "At least three matches per bowler at a venue, each with at least 24 legal balls."
+      },
+      {
+        "Question": "Q15",
+        "Rows": 8,
+        "Status": "Has results",
+        "Data needed": "Batting scorecards for wins by fewer than 50 runs or five wickets."
+      },
+      {
+        "Question": "Q16",
+        "Rows": 24,
+        "Status": "Has results",
+        "Data needed": "At least five recorded match appearances for the same player in one year since 2020."
+      },
+      {
+        "Question": "Q17",
+        "Rows": 2,
+        "Status": "Has results",
+        "Data needed": "Completed decisive matches with toss winner and bat/bowl decision imported."
+      },
+      {
+        "Question": "Q18",
+        "Rows": 4,
+        "Status": "Has results",
+        "Data needed": "At least ten ODI/T20I/T20 bowling matches per player and an average of two overs per match."
+      },
+      {
+        "Question": "Q19",
+        "Rows": 8,
+        "Status": "Has results",
+        "Data needed": "Batting innings since 2022 with at least ten balls faced."
+      },
+      {
+        "Question": "Q20",
+        "Rows": 8,
+        "Status": "Has results",
+        "Data needed": "At least 20 recorded appearances per player in Test, ODI, T20I or T20."
+      },
+      {
+        "Question": "Q21",
+        "Rows": 24,
+        "Status": "Has results",
+        "Data needed": "Imported scorecard performances; missing fielding produces only a partial ranking."
+      },
+      {
+        "Question": "Q22",
+        "Rows": 12,
+        "Status": "Has results",
+        "Data needed": "At least five completed meetings of a team pair in the selected trailing three years."
+      },
+      {
+        "Question": "Q23",
+        "Rows": 8,
+        "Status": "Has results",
+        "Data needed": "Imported batting matches; fewer than ten matches produce a limited-sample form result."
+      },
+      {
+        "Question": "Q24",
+        "Rows": 6,
+        "Status": "Has results",
+        "Data needed": "The same adjacent-position batting pair in at least five innings (proxy only)."
+      },
+      {
+        "Question": "Q25",
+        "Rows": 80,
+        "Status": "Has results",
+        "Data needed": "Six qualifying quarters per player in the trailing three years, with at least three appearances per quarter."
+      }
+    ]
+  }
+}

@@ -100,3 +100,5 @@ The custom SQL connection opens the database with SQLite mode=ro, denies unautho
 - Seed is intentionally artificial for transparent oracles, not a cricket match simulator. Synthetic result margins are fixture inputs, not inferred from displayed batting totals. Only four batters/two bowlers per side are included. No sample statistic represents a real cricketer.
 - Partnerships are adjacent-position **combined-score proxies**, not verified stands. See the visible SQL assumptions.
 - Demo video is a silent screen recording; the accompanying script supplies narration. Authenticated live-provider access is documented separately in docs/LIVE_VERIFICATION.md.
+
+For repeated empty live SQL results, see [SQL data coverage investigation](docs/SQL_DATA_COVERAGE.md). SQL Analytics now shows imported-data counts and can check all 25 question results without API calls. Use its explicit sample-data switch for the full fictional assignment demo.

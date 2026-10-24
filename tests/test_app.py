@@ -120,3 +120,32 @@ def test_player_page_chart_does_not_require_altair_import(app_data, monkeypatch)
     assert not at.exception
     assert len(at.get("arrow_vega_lite_chart")) == 1
     assert any(h.value == "Compare players" for h in at.subheader)
+
+
+def test_live_sql_explains_q9_q16_and_explicit_sample_switch(app_data):
+    from tests.test_diagnostics import one_live_card
+
+    one_live_card(app_data / "live.sqlite3")
+    at = AppTest.from_file(str(ROOT / "pages/3_SQL_Analytics.py")).run()
+    at.sidebar.selectbox[0].select("Live API").run()
+    next(s for s in at.selectbox if s.label == "Difficulty").select("Intermediate").run()
+    next(s for s in at.selectbox if s.label == "Question").select(9).run()
+    next(b for b in at.button if b.label == "Execute question").click().run()
+    assert not at.exception
+    assert any("highest stored runs per format: 11" in i.value for i in at.info)
+    next(s for s in at.selectbox if s.label == "Question").select(16).run()
+    next(b for b in at.button if b.label == "Execute question").click().run()
+    assert any("single eligible year: 1" in i.value for i in at.info)
+    next(b for b in at.button if b.label == "Use sample data for all 25 questions").click().run()
+    assert at.sidebar.selectbox[0].value == "Sample Data"
+    next(b for b in at.button if b.label == "Execute question").click().run()
+    assert not at.exception
+    assert len(at.dataframe[0].value) == 24
+
+
+def test_sql_all_question_check_reports_every_result(app_data):
+    at = AppTest.from_file(str(ROOT / "pages/3_SQL_Analytics.py")).run()
+    next(b for b in at.button if b.label == "Check all 25 questions").click().run()
+    assert not at.exception
+    assert any("25/25 questions have results" in i.value for i in at.info)
+    assert len(at.dataframe[0].value) == 25

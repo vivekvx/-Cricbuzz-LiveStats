@@ -8,6 +8,7 @@ import streamlit as st
 from analytics.calculations import balls_to_overs, provider_overs_display
 from analytics.queries import execute
 from analytics.coverage import live_warnings
+from analytics.diagnostics import dataset_summary, empty_explanation, audit_questions
 from analytics.query_registry import ASSUMPTIONS, QUESTIONS
 from analytics.validations import ROLES
 from api.client import ApiError, Client
@@ -415,6 +416,22 @@ def sql_analytics():
     path, mode, as_of = setup("SQL analytics")
     st.title("SQL queries & analytics")
     st.caption("25 questions · inspect the SQL · execute against the current database")
+    coverage = dataset_summary(path)
+    cols = st.columns(3)
+    cols[0].metric("Listed matches", coverage["listed_matches"])
+    cols[1].metric("Matches with scorecards", coverage["scorecard_matches"])
+    cols[2].metric("Stored batting innings", coverage["batting_rows"])
+    if mode == "Live API":
+        st.info(
+            "A working API connection does not provide a complete historical database. "
+            "Refreshing a match list imports fixtures and results; player performances are imported only when you fetch each detailed scorecard. "
+            "Most history-based questions need many scorecards for the same players."
+        )
+        st.button("Use sample data for all 25 questions", on_click=start_demo)
+        st.caption(
+            "This explicitly switches to fictional assignment data. To keep real data, use Live Matches → select a match → Fetch detailed scorecard. "
+            "Player profiles and career tables are fetched separately on Top Player Stats."
+        )
     level = st.selectbox("Difficulty", ["Beginner", "Intermediate", "Advanced"])
     choices = [q for q in QUESTIONS if q["level"] == level]
     number = st.selectbox(
@@ -436,9 +453,28 @@ def sql_analytics():
         st.text(ASSUMPTIONS)
     if st.button("Execute question", type="primary"):
         try:
-            table(execute(path, number, as_of), f"q{number}")
+            result = execute(path, number, as_of)
+            if result:
+                st.caption(f"Q{number} · {mode} · {len(result)} result rows")
+                table(result, f"q{number}")
+            else:
+                st.info(empty_explanation(path, number, as_of, mode))
         except (sqlite3.Error, ValueError) as exc:
             st.error(f"Query could not finish: {exc}")
+    with st.expander("Check results for all 25 questions"):
+        st.caption(
+            "Runs every question against the selected database and date, with no API requests. "
+            "A nonempty result is not proof of complete historical coverage."
+        )
+        if st.button("Check all 25 questions"):
+            checks = audit_questions(path, as_of)
+            populated = sum(row["Status"] == "Has results" for row in checks)
+            failed = sum(row["Status"].startswith("Query failed") for row in checks)
+            st.info(
+                f"{mode}: {populated}/25 questions have results; "
+                f"{25 - populated - failed} have no qualifying rows; {failed} failed."
+            )
+            table(checks, "all_question_checks")
     st.divider()
     st.subheader("Read-only SQL workspace")
     st.caption(
