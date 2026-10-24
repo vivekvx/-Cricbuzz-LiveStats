@@ -1,5 +1,11 @@
 # Demonstration script
 
+## If the hosted app shows zero records
+
+A newly deployed Live API database is empty until data is fetched. If the sidebar says API key missing, the local .env was not uploaded (intentionally). Use **Start demo with sample data** to explicitly select the complete synthetic dataset and its reference date. All four modules and 25 queries can be demonstrated without a key. For actual live data, the app owner must save RAPIDAPI_KEY in Cloud Secrets, then use Refresh matches and Fetch detailed scorecard. Local SQLite records are not transferred to the hosted app.
+
+## Walkthrough
+
 Use Sample Data throughout this credential-free demo. Say explicitly that every player and score is synthetic. Do not describe any synthetic card as a live match. A subscribed key is now configured locally and Live API access has been verified; the distributed ZIP omits that key. Never display it during recording.
 
 1. Start `streamlit run main.py` from the activated project environment. Open localhost:8501.

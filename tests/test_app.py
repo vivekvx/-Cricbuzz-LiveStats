@@ -47,7 +47,7 @@ def test_live_mode_no_fallback(app_data):
     at.sidebar.selectbox[0].select("Live API").run()
     assert not at.exception
     assert any("No provider snapshot" in i.value for i in at.info)
-    at.button[0].click().run()
+    next(b for b in at.button if b.label == "Refresh matches").click().run()
     assert any("missing" in e.value for e in at.error)
     assert len(at.dataframe) == 0
 
@@ -80,3 +80,15 @@ def test_hosted_demo_discloses_shared_temporary_storage(app_data, monkeypatch):
     at = AppTest.from_file(str(ROOT / "main.py")).run()
     assert not at.exception
     assert any("database edits are shared" in item.value for item in at.sidebar.info)
+
+
+def test_missing_cloud_key_has_working_one_click_demo(app_data):
+    at = AppTest.from_file(str(ROOT / "main.py")).run()
+    at.sidebar.selectbox[0].select("Live API").run()
+    assert any("this deployment has no API key" in w.value for w in at.warning)
+    next(b for b in at.button if b.label == "Start demo with sample data").click().run()
+    assert not at.exception
+    assert at.sidebar.selectbox[0].value == "Sample Data"
+    assert at.metric[0].value == "60"
+    assert at.metric[1].value == "8"
+    assert at.metric[3].value == "25"

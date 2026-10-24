@@ -19,6 +19,12 @@ from services.ingestion import ingest_matches, ingest_scorecard
 from services.player_service import fetch_player
 
 
+def start_demo():
+    """Explicitly select synthetic data and its reproducible reference date."""
+    st.session_state["data_mode"] = "Sample Data"
+    st.session_state["as_of_Sample Data"] = date.fromisoformat(DEMO_DATE)
+
+
 def setup(title):
     """Initialize the selected mode and return its database and reference date."""
     st.set_page_config(page_title=f"{title} · Cricbuzz LiveStats", page_icon="🏏", layout="wide")
@@ -44,6 +50,22 @@ def setup(title):
         initialize(path)
         st.sidebar.info("LIVE API · Provider records only")
         st.sidebar.caption("Key configured" if api_key() else "API key missing")
+        if not api_key():
+            st.warning(
+                "Live API is not connected: this deployment has no API key. Its live database starts empty; your local key and data are not copied to the hosted app."
+            )
+            st.button("Start demo with sample data", on_click=start_demo, type="primary")
+            st.caption(
+                "Demo data is clearly labeled, requires no key and includes results for all 25 SQL questions. It is never presented as live cricket."
+            )
+            with st.expander("App owner: enable live data on Streamlit Cloud"):
+                st.write(
+                    "Open Manage app → Settings → Secrets. Add RAPIDAPI_KEY and save. Then open Live Matches and press Refresh matches, select a match and fetch its detailed scorecard."
+                )
+                st.code(
+                    'RAPIDAPI_KEY = "your_actual_key"\nDEPLOYMENT_ENV = "community-cloud"',
+                    language="toml",
+                )
     as_of = st.sidebar.date_input(
         "Analytics reference date",
         value=date.fromisoformat(DEMO_DATE) if mode == "Sample Data" else date.today(),
@@ -95,6 +117,11 @@ def home():
         ],
     ):
         col.metric(label, value)
+    if mode == "Live API" and counts["matches"] == 0 and api_key():
+        st.info(
+            "Your API key is configured. Load the first match snapshot in Match centre; the hosted database is separate from your computer."
+        )
+        st.page_link("pages/1_Live_Matches.py", label="Load live matches", icon="🏏")
     st.subheader("Your cricket workspace")
     a, b = st.columns(2)
     with a:

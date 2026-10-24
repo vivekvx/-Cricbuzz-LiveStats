@@ -4,7 +4,7 @@ Completed locally on 24 October 2026 using Python 3.11, SQLite, Streamlit 1.50.0
 
 ## Automated verification
 
-Final full run: **97 passed in 2.78 seconds** using `.venv/bin/python -m pytest -q`.
+Final full run: **98 passed in 2.85 seconds** using `.venv/bin/python -m pytest -q`.
 
 - Every Q1–Q25 has an individual expected-answer test: rows, totals, means, eligibility, ranks or classes, rather than only checking execution.
 - All 25 also run against an empty database and return empty results gracefully.
@@ -36,3 +36,7 @@ See COMPLIANCE_AUDIT.md for corrected Q12/Q16/Q23/Q25 semantics and five new reg
 ## Community Cloud preparation
 
 The current run has 97 passing tests, including secrets configuration, hosted-storage disclosure and concurrent first-visitor seeding. Dependency compatibility (`pip check`) also passes. See STREAMLIT_DEPLOYMENT.md for repository values and the Ubuntu GitHub Actions verification.
+
+## Hosted missing-key recovery
+
+The current run has 98 passing tests. The missing-key Home state now explains why live counts are zero, links the owner to Cloud Secrets instructions, and provides an explicit one-click switch to the seeded demo with its reference date. AppTest verifies the recovered 60-match/eight-player/25-question state.
