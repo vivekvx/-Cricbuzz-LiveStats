@@ -1,16 +1,26 @@
-"""Normalize the v1 contract. Missing facts stay missing; never infer winners."""
+"""Normalize provider contracts; missing facts stay missing and outcomes are never deduced from scores."""
 
 from datetime import datetime, timezone
 from api.client import ApiError
 from analytics.calculations import overs_to_balls
+from services.results import result_fields
 
 
-def cricket_format(value, international=False):
-    if str(value).upper() == "T20" and international:
-        return "T20I"
-    return {"TEST": "Test", "ODI": "ODI", "T20I": "T20I", "T20": "T20"}.get(
-        str(value).upper(), "Other"
+def cricket_format(value, international=None, description=""):
+    """Separate international formats from domestic and unofficial games.
+
+    Unspecified context preserves the standalone format helper's old behavior;
+    list ingestion always supplies a competition group and description.
+    """
+    fmt = str(value).upper()
+    unofficial = any(
+        term in str(description).lower() for term in ("unofficial", "warm-up", "warm up")
     )
+    if unofficial or (fmt in ("TEST", "ODI") and international is False):
+        return "Other"
+    if fmt == "T20" and international is True:
+        return "T20I"
+    return {"TEST": "Test", "ODI": "ODI", "T20I": "T20I", "T20": "T20"}.get(fmt, "Other")
 
 
 def normalize_matches(payload):
@@ -41,6 +51,11 @@ def normalize_matches(payload):
                         if state in ("abandon", "abandoned")
                         else "Live"
                     )
+                    winner, margin, victory_type = (
+                        result_fields(info.get("status"), teams)
+                        if status == "Complete"
+                        else (None, None, None)
+                    )
                     result.append(
                         {
                             "id": int(info["matchId"]),
@@ -52,7 +67,13 @@ def normalize_matches(payload):
                             "format": cricket_format(
                                 info.get("matchFormat"),
                                 str(group.get("matchType", "")).lower() == "international",
+                                info.get("matchDesc", ""),
                             ),
+                            "provider_format": info.get("matchFormat"),
+                            "competition_group": group.get("matchType", "Unknown"),
+                            "winner_id": winner,
+                            "margin": margin,
+                            "victory_type": victory_type,
                             "date": datetime.fromtimestamp(
                                 int(info["startDate"]) / 1000, timezone.utc
                             )
@@ -93,8 +114,11 @@ def normalize_scorecard(payload, teams=None):
                         "position": index,
                         "runs": int(value.get("runs", 0)),
                         "balls": int(value.get("balls", 0)),
+                        "did_not_bat": not str(value.get("outDesc", "")).strip()
+                        and int(value.get("balls", 0)) == 0
+                        and int(value.get("runs", 0)) == 0,
                         "dismissed": int(
-                            str(value.get("outDesc", "")).lower()
+                            str(value.get("outDesc", "")).strip().lower()
                             not in ("", "not out", "batting", "retired hurt")
                         ),
                     }

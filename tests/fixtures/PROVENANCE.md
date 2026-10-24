@@ -1,1 +1,3 @@
 matches.json and scorecard.json are synthetic contract fixtures. current_scorecard.json is a minimal projection of an authenticated public cricket scorecard response captured on 2026-10-24 from /mcenter/v1/161201/scard, provider Cricbuzz Cricket on RapidAPI. It contains no request headers or credentials. Regression tests assert the returned snapshot values, not the current score of that match.
+
+`audited_scorecards.json` contains minimal public projections of authenticated snapshots for T20I 161201, ODI 170727 and Test 147931 captured on 2026-10-24. Match totals/results were cross-checked against public Cricbuzz and ICC listings. Request headers and credentials are excluded. The snapshots are fixed regression examples, not current live scores.

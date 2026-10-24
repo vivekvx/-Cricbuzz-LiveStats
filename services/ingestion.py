@@ -4,6 +4,7 @@ import json
 from datetime import datetime, timezone
 from database.connection import connect
 from services.normalization import normalize_matches, normalize_scorecard
+from services.results import result_fields, explicitly_no_winner
 
 
 def snapshot(c, endpoint, payload):
@@ -24,6 +25,14 @@ def ingest_matches(path, payload, category="live"):
         if c.execute("SELECT 1 FROM metadata WHERE key='seed_version'").fetchone():
             raise ValueError("Provider ingestion requires a separate, unseeded live database.")
         for m in matches:
+            existing = c.execute("SELECT status FROM matches WHERE id=?", (m["id"],)).fetchone()
+            if (
+                existing
+                and existing["status"] == "Complete"
+                and m["status"] in ("Live", "Upcoming")
+            ):
+                # A cached list must not undo a terminal result already supplied by a card.
+                continue
             for t in m["teams"]:
                 # Team country is not reliably provided by this endpoint. Unknown stays unknown.
                 c.execute(
@@ -50,8 +59,8 @@ def ingest_matches(path, payload, category="live"):
                     ),
                 )
             c.execute(
-                """INSERT INTO matches(id,description,team1_id,team2_id,venue_id,match_date,format,status,status_text,source)
-                         VALUES(?,?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET description=excluded.description,venue_id=excluded.venue_id,format=excluded.format,status=excluded.status,status_text=excluded.status_text""",
+                """INSERT INTO matches(id,description,team1_id,team2_id,venue_id,match_date,format,status,status_text,source,winner_id,margin,victory_type)
+                         VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?) ON CONFLICT(id) DO UPDATE SET description=excluded.description,team1_id=excluded.team1_id,team2_id=excluded.team2_id,match_date=excluded.match_date,venue_id=excluded.venue_id,format=excluded.format,status=excluded.status,status_text=CASE WHEN excluded.status_text<>'' THEN excluded.status_text ELSE matches.status_text END,winner_id=CASE WHEN ? THEN NULL ELSE COALESCE(excluded.winner_id,matches.winner_id) END,margin=CASE WHEN ? THEN NULL ELSE COALESCE(excluded.margin,matches.margin) END,victory_type=CASE WHEN ? THEN NULL ELSE COALESCE(excluded.victory_type,matches.victory_type) END""",
                 (
                     m["id"],
                     m["description"],
@@ -63,6 +72,12 @@ def ingest_matches(path, payload, category="live"):
                     m["status"],
                     m["status_text"],
                     "rapidapi-cricbuzz-v1",
+                    m["winner_id"],
+                    m["margin"],
+                    m["victory_type"],
+                    explicitly_no_winner(m["status_text"]),
+                    explicitly_no_winner(m["status_text"]),
+                    explicitly_no_winner(m["status_text"]),
                 ),
             )
         snapshot(c, f"matches/{category}", payload)
@@ -122,5 +137,24 @@ def ingest_scorecard(path, match_id, payload):
                             "INSERT INTO bowling VALUES(?,?,?,?,?)",
                             (iid, pid, p["balls"], p["runs"], p["wickets"]),
                         )
+        if cards:
+            first = min(cards, key=lambda card: card["number"])
+            if first["number"] == 1:
+                c.execute(
+                    "UPDATE matches SET batting_first_id=? WHERE id=?",
+                    (first["bat_team"], match_id),
+                )
+        team_records = [{"teamName": name, "teamId": tid} for name, tid in teams.items()]
+        result_status = payload.get("status", "")
+        winner, margin, victory_type = result_fields(result_status, team_records)
+        if payload.get("ismatchcomplete") is True or winner is not None:
+            c.execute("UPDATE matches SET status='Complete' WHERE id=?", (match_id,))
+            if result_status:
+                c.execute("UPDATE matches SET status_text=? WHERE id=?", (result_status, match_id))
+            if winner is not None or explicitly_no_winner(result_status):
+                c.execute(
+                    "UPDATE matches SET winner_id=?,margin=?,victory_type=? WHERE id=?",
+                    (winner, margin, victory_type, match_id),
+                )
         snapshot(c, f"scorecard/{match_id}", payload)
     return cards

@@ -1,7 +1,7 @@
 WITH apps AS (
  SELECT a.player_id,COUNT(*) total_matches,
  SUM(m.format='Test') test_matches,SUM(m.format='ODI') odi_matches,SUM(m.format IN ('T20I','T20')) t20_matches
- FROM participants a JOIN matches m ON m.id=a.match_id GROUP BY a.player_id HAVING COUNT(*)>=20),
+ FROM participants a JOIN matches m ON m.id=a.match_id WHERE m.format IN ('Test','ODI','T20I','T20') GROUP BY a.player_id HAVING COUNT(*)>=20),
  bat AS (SELECT player_id,
  1.0*SUM(CASE WHEN format='Test' THEN runs END)/NULLIF(SUM(CASE WHEN format='Test' THEN dismissed END),0) test_average,
  1.0*SUM(CASE WHEN format='ODI' THEN runs END)/NULLIF(SUM(CASE WHEN format='ODI' THEN dismissed END),0) odi_average,

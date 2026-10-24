@@ -47,6 +47,9 @@ def initialize(path):
     with connect(path) as conn:
         conn.executescript(Path(__file__).with_name("schema.sql").read_text())
         conn.execute("INSERT OR IGNORE INTO metadata VALUES('schema_version','1')")
+        from database.migrations import apply
+
+        apply(conn)
 
 
 def read_query(path, sql, params=None, limit=5000):

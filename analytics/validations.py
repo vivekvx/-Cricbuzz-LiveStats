@@ -1,6 +1,6 @@
 """Shared input validation."""
 
-ROLES = ["Batsman", "Bowler", "All-rounder", "Wicket-keeper"]
+ROLES = ["Batsman", "Bowler", "All-rounder", "Wicket-keeper", "Unknown"]
 
 
 def player_fields(name, country, role, batting_style, bowling_style):

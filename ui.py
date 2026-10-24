@@ -1,12 +1,13 @@
 """Shared presentation and page controllers for the five-page dashboard."""
 
-from datetime import date
+from datetime import date, datetime, timezone
 import json
 import sqlite3
 import pandas as pd
 import streamlit as st
 from analytics.calculations import balls_to_overs, provider_overs_display
 from analytics.queries import execute
+from analytics.coverage import live_warnings
 from analytics.query_registry import ASSUMPTIONS, QUESTIONS
 from analytics.validations import ROLES
 from api.client import ApiError, Client
@@ -17,6 +18,7 @@ from database.connection import initialize, read_query
 from database.seed import DEMO_DATE, seed
 from services.ingestion import ingest_matches, ingest_scorecard
 from services.player_service import fetch_player
+from services.freshness import provider_timestamp
 
 
 def remember_data_mode():
@@ -87,6 +89,20 @@ def setup(title):
             "Hosted demo: database edits are shared with other viewers and may reset. Export important results as CSV."
         )
     return path, mode, as_of
+
+
+def show_snapshot_time(payload, fetched_at, label, live=False):
+    """Separate provider update time from fetch time; do not promise live freshness."""
+    updated = provider_timestamp(payload)
+    st.caption(f"{label} fetched: {fetched_at}")
+    if updated is None:
+        st.caption("Provider update time is unavailable; freshness cannot be verified.")
+    else:
+        st.caption(f"Provider updated: {updated.isoformat()}")
+        if live and (datetime.now(timezone.utc) - updated).total_seconds() > 900:
+            st.warning(
+                "The provider update is more than 15 minutes old. Treat these as a saved snapshot, not a current live score."
+            )
 
 
 def table(rows, key="table"):
@@ -207,8 +223,14 @@ def match_centre():
                 "No provider snapshot yet. Use Refresh matches. API failures never fall back to sample scores."
             )
             return
+        show_snapshot_time(
+            json.loads(snapshots[0]["payload"]),
+            snapshots[0]["fetched_at"],
+            "Match list",
+            live=category == "live",
+        )
         st.caption(
-            f"Last successful fetch: {snapshots[0]['fetched_at']} · saved snapshot may be stale"
+            "Manual snapshots: match lists and detailed scorecards can have different update times. Refresh the relevant snapshot before presenting a current score."
         )
         from services.normalization import normalize_matches
 
@@ -227,6 +249,10 @@ def match_centre():
                 st.write(
                     f"{match['format']} · {match['venue'].get('ground', 'Venue unavailable')} · {match['venue'].get('city', '')}"
                 )
+                if match["format"] == "Other":
+                    st.caption(
+                        f"Provider format: {match['provider_format']} · {match['competition_group']}. This is not classified as an international Test or ODI."
+                    )
                 st.write(match["status_text"] or match["status"])
                 for side, scores in match["scores"].items():
                     if isinstance(scores, dict):
@@ -261,6 +287,23 @@ def match_centre():
         match = next(m for m in matches if m["id"] == selected)
         st.subheader(f"{match['team1']} vs {match['team2']}")
         st.write(f"{match['venue']} · {match['city']} · {match['status_text']}")
+    if mode == "Live API":
+        card_snapshots = read_query(
+            path,
+            "SELECT payload,fetched_at FROM api_snapshots WHERE endpoint=:endpoint",
+            {"endpoint": f"scorecard/{selected}"},
+        )
+        if card_snapshots:
+            card_payload = json.loads(card_snapshots[0]["payload"])
+            st.subheader("Stored detailed scorecard")
+            show_snapshot_time(
+                card_payload,
+                card_snapshots[0]["fetched_at"],
+                "Scorecard",
+                live=not card_payload.get("ismatchcomplete", False),
+            )
+            if card_payload.get("status"):
+                st.write(card_payload["status"])
     innings = read_query(
         path,
         "SELECT i.*,t.name team FROM innings i JOIN teams t ON t.id=i.team_id WHERE match_id=:mid ORDER BY number",
@@ -310,6 +353,9 @@ def player_stats():
         )
         if saved:
             st.subheader("API career snapshots")
+            st.caption(
+                "Provider career totals are separate from the imported-scorecard leaderboard below. Provider values and format labels (including T20) are retained verbatim. They can contain upstream rounding differences; T20 must not be assumed to mean domestic-only cricket."
+            )
             table(
                 [
                     {
@@ -331,6 +377,10 @@ def player_stats():
             "No scorecard-based player statistics yet. Fetch a match scorecard in Match centre."
         )
         return
+    st.subheader("Imported-scorecard leaderboard")
+    st.caption(
+        "Totals and comparisons use only stored scorecards in the selected format, not worldwide or complete-career records."
+    )
     df = pd.DataFrame(rows)
     metric = st.selectbox(
         "Leaderboard", ["runs", "highest", "wickets", "batting_average", "economy"]
@@ -347,7 +397,7 @@ def player_stats():
 
 
 def sql_analytics():
-    path, _, as_of = setup("SQL analytics")
+    path, mode, as_of = setup("SQL analytics")
     st.title("SQL queries & analytics")
     st.caption("25 questions · inspect the SQL · execute against the current database")
     level = st.selectbox("Difficulty", ["Beginner", "Intermediate", "Advanced"])
@@ -364,6 +414,9 @@ def sql_analytics():
         st.write(line)
     st.code(q["sql"], language="sql")
     st.write(q["explanation"])
+    if mode == "Live API":
+        for warning in live_warnings(path, number):
+            st.warning(warning)
     with st.expander("Definitions, thresholds and assumptions"):
         st.text(ASSUMPTIONS)
     if st.button("Execute question", type="primary"):

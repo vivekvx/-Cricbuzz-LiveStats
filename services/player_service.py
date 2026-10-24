@@ -45,7 +45,7 @@ def fetch_player(path, client, provider_id):
             "INSERT INTO players(full_name,country,role,batting_style,bowling_style,source,external_id) VALUES(?,?,?,?,?,?,?) ON CONFLICT(external_id) DO UPDATE SET full_name=excluded.full_name,country=excluded.country,role=excluded.role,batting_style=excluded.batting_style,bowling_style=excluded.bowling_style",
             (
                 profile.get("fullName") or profile["name"],
-                profile.get("intlTeam", "Unknown"),
+                profile.get("intlTeam") or "Unknown",
                 role,
                 profile.get("bat") or "Unknown",
                 profile.get("bowl") or "Unknown",

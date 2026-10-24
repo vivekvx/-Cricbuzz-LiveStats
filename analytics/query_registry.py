@@ -34,6 +34,8 @@ EXPLANATIONS = [
 ASSUMPTIONS = """Dataset career totals cover stored scorecards only, not necessarily a complete real career.
 All divisions guard zero denominators; an undismissed batter has an undefined (NULL) average.
 Formats Test, ODI, T20I and domestic T20 remain distinct; Q18 and Q20 explicitly combine T20I/T20.
+Domestic TEST/ODI and unofficial/warm-up games are classified Other, rather than misrepresented as international Tests/ODIs.
+Q11 uses Test/ODI/T20I only; Q20 eligibility uses those plus domestic T20, excluding unclassified Other games.
 Q13/Q24 use adjacent batting-position combined-score proxies, never actual partnership runs.
 Q17 excludes no-result/tie matches with no winner. Q19 uses population standard deviation and >=10 balls per eligible innings.
 Q21 missing disciplines and undefined average terms contribute zero; no 25-point bowling bonus is awarded to non-bowlers.

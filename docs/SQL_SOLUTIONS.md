@@ -1,14 +1,14 @@
 # All 25 SQL solutions
 
-Dialect: SQLite. Bind `:as_of` to an ISO date. Default sample reference: 2026-10-24. The registered stddev_pop aggregate is required; see database/connection.py.
-
-The source Q21 bowling formula has an unmatched parenthesis; the executable solution uses the balanced formula specified in the supplemental prompt.
+Dialect: SQLite. Bind :as_of to an ISO date. The stddev_pop aggregate is registered by database/connection.py.
 
 ## Shared assumptions
 
 Dataset career totals cover stored scorecards only, not necessarily a complete real career.
 All divisions guard zero denominators; an undismissed batter has an undefined (NULL) average.
 Formats Test, ODI, T20I and domestic T20 remain distinct; Q18 and Q20 explicitly combine T20I/T20.
+Domestic TEST/ODI and unofficial/warm-up games are classified Other, rather than misrepresented as international Tests/ODIs.
+Q11 uses Test/ODI/T20I only; Q20 eligibility uses those plus domestic T20, excluding unclassified Other games.
 Q13/Q24 use adjacent batting-position combined-score proxies, never actual partnership runs.
 Q17 excludes no-result/tie matches with no winner. Q19 uses population standard deviation and >=10 balls per eligible innings.
 Q21 missing disciplines and undefined average terms contribute zero; no 25-point bowling bonus is awarded to non-bowlers.
@@ -142,7 +142,7 @@ SELECT p.full_name,SUM(CASE WHEN c.format='Test' THEN COALESCE(c.runs,0) ELSE 0 
 SUM(CASE WHEN c.format='ODI' THEN COALESCE(c.runs,0) ELSE 0 END) odi_runs,
 SUM(CASE WHEN c.format='T20I' THEN COALESCE(c.runs,0) ELSE 0 END) t20i_runs,
 1.0*SUM(c.runs)/NULLIF(SUM(c.dismissals),0) overall_batting_average
-FROM career c JOIN players p ON p.id=c.player_id WHERE c.matches>0
+FROM career c JOIN players p ON p.id=c.player_id WHERE c.matches>0 AND c.format IN ('Test','ODI','T20I')
 GROUP BY p.id HAVING COUNT(DISTINCT c.format)>=2 ORDER BY p.full_name;
 ```
 
@@ -289,7 +289,7 @@ Analyze how many matches each player has played in different cricket formats and
 WITH apps AS (
  SELECT a.player_id,COUNT(*) total_matches,
  SUM(m.format='Test') test_matches,SUM(m.format='ODI') odi_matches,SUM(m.format IN ('T20I','T20')) t20_matches
- FROM participants a JOIN matches m ON m.id=a.match_id GROUP BY a.player_id HAVING COUNT(*)>=20),
+ FROM participants a JOIN matches m ON m.id=a.match_id WHERE m.format IN ('Test','ODI','T20I','T20') GROUP BY a.player_id HAVING COUNT(*)>=20),
  bat AS (SELECT player_id,
  1.0*SUM(CASE WHEN format='Test' THEN runs END)/NULLIF(SUM(CASE WHEN format='Test' THEN dismissed END),0) test_average,
  1.0*SUM(CASE WHEN format='ODI' THEN runs END)/NULLIF(SUM(CASE WHEN format='ODI' THEN dismissed END),0) odi_average,

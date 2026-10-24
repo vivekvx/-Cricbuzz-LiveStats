@@ -1,0 +1,1226 @@
+[
+  {
+    "match": {
+      "matchId": 161201,
+      "seriesId": 12543,
+      "seriesName": "India tour of New Zealand 2026",
+      "matchDesc": "2nd T20I",
+      "matchFormat": "T20",
+      "startDate": "1792825200000",
+      "endDate": "1792837800000",
+      "state": "Complete",
+      "status": "India won by 4 wkts",
+      "team1": {
+        "teamId": 13,
+        "teamName": "New Zealand",
+        "teamSName": "NZ",
+        "imageId": 776333
+      },
+      "team2": {
+        "teamId": 2,
+        "teamName": "India",
+        "teamSName": "IND",
+        "imageId": 776162
+      },
+      "venueInfo": {
+        "id": 371,
+        "ground": "Hagley Oval",
+        "city": "Christchurch",
+        "timezone": "+13:00",
+        "latitude": "-43.535831",
+        "longitude": "172.624863"
+      },
+      "currBatTeamId": 2,
+      "seriesStartDt": "1792627200000",
+      "seriesEndDt": "1796256000000",
+      "isTimeAnnounced": true,
+      "stateTitle": "Complete",
+      "isFantasyEnabled": true,
+      "hideScoreStatus": "Match completed"
+    },
+    "card": {
+      "status": "India won by 4 wkts",
+      "ismatchcomplete": true,
+      "responselastupdated": 1792853474,
+      "scorecard": [
+        {
+          "inningsid": 1,
+          "batteamname": "New Zealand",
+          "score": 180,
+          "wickets": 5,
+          "overs": 20.0,
+          "ballnbr": 120,
+          "extras": {
+            "legbyes": 1,
+            "byes": 0,
+            "wides": 7,
+            "noballs": 1,
+            "penalty": 0,
+            "total": 9
+          },
+          "batsman": [
+            {
+              "id": 9443,
+              "name": "Tim Seifert",
+              "balls": 6,
+              "runs": 7,
+              "outdec": "c Tilak Varma b Arshdeep Singh"
+            },
+            {
+              "id": 11172,
+              "name": "Finn Allen",
+              "balls": 14,
+              "runs": 16,
+              "outdec": "b Prince Yadav"
+            },
+            {
+              "id": 10713,
+              "name": "Daryl Mitchell",
+              "balls": 5,
+              "runs": 6,
+              "outdec": "c Tilak Varma b Bhuvneshwar Kumar"
+            },
+            {
+              "id": 10693,
+              "name": "Glenn Phillips",
+              "balls": 43,
+              "runs": 70,
+              "outdec": "c Naman Dhir b Arshdeep Singh"
+            },
+            {
+              "id": 52428,
+              "name": "Bevon Jacobs",
+              "balls": 46,
+              "runs": 58,
+              "outdec": "c Axar Patel b Nitish Reddy"
+            },
+            {
+              "id": 10100,
+              "name": "Mitchell Santner",
+              "balls": 5,
+              "runs": 4,
+              "outdec": "not out"
+            },
+            {
+              "id": 9551,
+              "name": "Michael Bracewell",
+              "balls": 2,
+              "runs": 10,
+              "outdec": "not out"
+            },
+            {
+              "id": 11170,
+              "name": "Nathan Smith",
+              "balls": 0,
+              "runs": 0,
+              "outdec": ""
+            },
+            {
+              "id": 9067,
+              "name": "Matt Henry",
+              "balls": 0,
+              "runs": 0,
+              "outdec": ""
+            },
+            {
+              "id": 8554,
+              "name": "Jacob Duffy",
+              "balls": 0,
+              "runs": 0,
+              "outdec": ""
+            },
+            {
+              "id": 10692,
+              "name": "Lockie Ferguson",
+              "balls": 0,
+              "runs": 0,
+              "outdec": ""
+            }
+          ],
+          "bowler": [
+            {
+              "id": 1726,
+              "name": "Bhuvneshwar Kumar",
+              "balls": 24,
+              "overs": "4",
+              "runs": 50,
+              "wickets": 1
+            },
+            {
+              "id": 13217,
+              "name": "Arshdeep Singh",
+              "balls": 24,
+              "overs": "4",
+              "runs": 33,
+              "wickets": 2
+            },
+            {
+              "id": 54735,
+              "name": "Prince Yadav",
+              "balls": 24,
+              "overs": "4",
+              "runs": 30,
+              "wickets": 1
+            },
+            {
+              "id": 36139,
+              "name": "Naman Dhir",
+              "balls": 6,
+              "overs": "1",
+              "runs": 7,
+              "wickets": 0
+            },
+            {
+              "id": 8808,
+              "name": "Axar Patel",
+              "balls": 24,
+              "overs": "4",
+              "runs": 28,
+              "wickets": 0
+            },
+            {
+              "id": 14701,
+              "name": "Nitish Kumar Reddy",
+              "balls": 18,
+              "overs": "3",
+              "runs": 31,
+              "wickets": 1
+            }
+          ]
+        },
+        {
+          "inningsid": 2,
+          "batteamname": "India",
+          "score": 181,
+          "wickets": 6,
+          "overs": 19.5,
+          "ballnbr": 119,
+          "extras": {
+            "legbyes": 2,
+            "byes": 0,
+            "wides": 5,
+            "noballs": 3,
+            "penalty": 0,
+            "total": 10
+          },
+          "batsman": [
+            {
+              "id": 8271,
+              "name": "Sanju Samson",
+              "balls": 17,
+              "runs": 14,
+              "outdec": "c Glenn Phillips b Jacob Duffy"
+            },
+            {
+              "id": 12086,
+              "name": "Abhishek Sharma",
+              "balls": 21,
+              "runs": 27,
+              "outdec": "c Nathan Smith b Mitchell Santner"
+            },
+            {
+              "id": 51791,
+              "name": "Vaibhav Sooryavanshi",
+              "balls": 8,
+              "runs": 4,
+              "outdec": "c Daryl Mitchell b Nathan Smith"
+            },
+            {
+              "id": 9428,
+              "name": "Shreyas Iyer",
+              "balls": 11,
+              "runs": 7,
+              "outdec": "b Mitchell Santner"
+            },
+            {
+              "id": 8808,
+              "name": "Axar Patel",
+              "balls": 9,
+              "runs": 11,
+              "outdec": "c Daryl Mitchell b Mitchell Santner"
+            },
+            {
+              "id": 14504,
+              "name": "Tilak Varma",
+              "balls": 26,
+              "runs": 51,
+              "outdec": "not out"
+            },
+            {
+              "id": 36139,
+              "name": "Naman Dhir",
+              "balls": 17,
+              "runs": 31,
+              "outdec": "c Glenn Phillips b Mitchell Santner"
+            },
+            {
+              "id": 14701,
+              "name": "Nitish Kumar Reddy",
+              "balls": 13,
+              "runs": 26,
+              "outdec": "not out"
+            },
+            {
+              "id": 1726,
+              "name": "Bhuvneshwar Kumar",
+              "balls": 0,
+              "runs": 0,
+              "outdec": ""
+            },
+            {
+              "id": 13217,
+              "name": "Arshdeep Singh",
+              "balls": 0,
+              "runs": 0,
+              "outdec": ""
+            },
+            {
+              "id": 54735,
+              "name": "Prince Yadav",
+              "balls": 0,
+              "runs": 0,
+              "outdec": ""
+            }
+          ],
+          "bowler": [
+            {
+              "id": 9067,
+              "name": "Matt Henry",
+              "balls": 12,
+              "overs": "2",
+              "runs": 11,
+              "wickets": 0
+            },
+            {
+              "id": 8554,
+              "name": "Jacob Duffy",
+              "balls": 23,
+              "overs": "3.5",
+              "runs": 41,
+              "wickets": 1
+            },
+            {
+              "id": 10692,
+              "name": "Lockie Ferguson",
+              "balls": 18,
+              "overs": "3",
+              "runs": 37,
+              "wickets": 0
+            },
+            {
+              "id": 9551,
+              "name": "Michael Bracewell",
+              "balls": 24,
+              "overs": "4",
+              "runs": 35,
+              "wickets": 0
+            },
+            {
+              "id": 11170,
+              "name": "Nathan Smith",
+              "balls": 18,
+              "overs": "3",
+              "runs": 34,
+              "wickets": 1
+            },
+            {
+              "id": 10100,
+              "name": "Mitchell Santner",
+              "balls": 24,
+              "overs": "4",
+              "runs": 21,
+              "wickets": 4
+            }
+          ]
+        }
+      ]
+    },
+    "expected": {
+      "runs": [
+        180,
+        181
+      ],
+      "balls": [
+        120,
+        119
+      ],
+      "dismissals": [
+        5,
+        6
+      ],
+      "winner": 2,
+      "margin": 4,
+      "method": "wickets"
+    }
+  },
+  {
+    "match": {
+      "matchId": 170727,
+      "seriesId": 13047,
+      "seriesName": "Pakistan ODI Tri-Series, 2026",
+      "matchDesc": "3rd Match",
+      "matchFormat": "ODI",
+      "startDate": "1792656000000",
+      "endDate": "1792684800000",
+      "state": "Complete",
+      "status": "Sri Lanka won by 2 wkts",
+      "team1": {
+        "teamId": 9,
+        "teamName": "England",
+        "teamSName": "ENG",
+        "imageId": 776237
+      },
+      "team2": {
+        "teamId": 5,
+        "teamName": "Sri Lanka",
+        "teamSName": "SL",
+        "imageId": 776254
+      },
+      "venueInfo": {
+        "id": 25,
+        "ground": "Rawalpindi Cricket Stadium",
+        "city": "Rawalpindi",
+        "timezone": "+05:00",
+        "latitude": "33.651525",
+        "longitude": "73.075824"
+      },
+      "currBatTeamId": 5,
+      "seriesStartDt": "1792281600000",
+      "seriesEndDt": "1793577600000",
+      "isTimeAnnounced": true,
+      "stateTitle": "SL Won",
+      "hideScoreStatus": "Match completed"
+    },
+    "card": {
+      "status": "Sri Lanka won by 2 wkts",
+      "ismatchcomplete": true,
+      "responselastupdated": 1792853476,
+      "scorecard": [
+        {
+          "inningsid": 1,
+          "batteamname": "England",
+          "score": 429,
+          "wickets": 4,
+          "overs": 50.0,
+          "ballnbr": 300,
+          "extras": {
+            "legbyes": 1,
+            "byes": 1,
+            "wides": 9,
+            "noballs": 2,
+            "penalty": 0,
+            "total": 13
+          },
+          "batsman": [
+            {
+              "id": 12254,
+              "name": "Tom Banton",
+              "balls": 51,
+              "runs": 50,
+              "outdec": "c Janith Liyanage b Dunith Wellalage"
+            },
+            {
+              "id": 8502,
+              "name": "Ben Duckett",
+              "balls": 39,
+              "runs": 29,
+              "outdec": "lbw b Dunith Wellalage"
+            },
+            {
+              "id": 8019,
+              "name": "Joe Root",
+              "balls": 66,
+              "runs": 69,
+              "outdec": "c Dunith Wellalage b Asitha Fernando"
+            },
+            {
+              "id": 12201,
+              "name": "Harry Brook",
+              "balls": 116,
+              "runs": 202,
+              "outdec": "c Sahan Arachchige b Janith Liyanage"
+            },
+            {
+              "id": 12258,
+              "name": "Will Jacks",
+              "balls": 30,
+              "runs": 66,
+              "outdec": "not out"
+            },
+            {
+              "id": 14813,
+              "name": "Jordan Cox",
+              "balls": 0,
+              "runs": 0,
+              "outdec": ""
+            },
+            {
+              "id": 10420,
+              "name": "Sam Curran",
+              "balls": 0,
+              "runs": 0,
+              "outdec": ""
+            },
+            {
+              "id": 8512,
+              "name": "Jamie Overton",
+              "balls": 0,
+              "runs": 0,
+              "outdec": ""
+            },
+            {
+              "id": 6639,
+              "name": "Liam Dawson",
+              "balls": 0,
+              "runs": 0,
+              "outdec": ""
+            },
+            {
+              "id": 13681,
+              "name": "Gus Atkinson",
+              "balls": 0,
+              "runs": 0,
+              "outdec": ""
+            },
+            {
+              "id": 12747,
+              "name": "Josh Tongue",
+              "balls": 0,
+              "runs": 0,
+              "outdec": ""
+            }
+          ],
+          "bowler": [
+            {
+              "id": 10938,
+              "name": "Asitha Fernando",
+              "balls": 60,
+              "overs": "10",
+              "runs": 68,
+              "wickets": 1
+            },
+            {
+              "id": 15067,
+              "name": "Dilshan Madushanka",
+              "balls": 60,
+              "overs": "10",
+              "runs": 89,
+              "wickets": 0
+            },
+            {
+              "id": 46926,
+              "name": "Eshan Malinga",
+              "balls": 60,
+              "overs": "10",
+              "runs": 91,
+              "wickets": 0
+            },
+            {
+              "id": 14251,
+              "name": "Dunith Wellalage",
+              "balls": 60,
+              "overs": "10",
+              "runs": 56,
+              "wickets": 2
+            },
+            {
+              "id": 8422,
+              "name": "Dasun Shanaka",
+              "balls": 36,
+              "overs": "6",
+              "runs": 74,
+              "wickets": 0
+            },
+            {
+              "id": 10940,
+              "name": "Kamindu Mendis",
+              "balls": 12,
+              "overs": "2",
+              "runs": 17,
+              "wickets": 0
+            },
+            {
+              "id": 13694,
+              "name": "Janith Liyanage",
+              "balls": 12,
+              "overs": "2",
+              "runs": 32,
+              "wickets": 1
+            }
+          ]
+        },
+        {
+          "inningsid": 2,
+          "batteamname": "Sri Lanka",
+          "score": 430,
+          "wickets": 8,
+          "overs": 49.5,
+          "ballnbr": 299,
+          "extras": {
+            "legbyes": 1,
+            "byes": 1,
+            "wides": 3,
+            "noballs": 0,
+            "penalty": 0,
+            "total": 5
+          },
+          "batsman": [
+            {
+              "id": 10940,
+              "name": "Kamindu Mendis",
+              "balls": 16,
+              "runs": 18,
+              "outdec": "b Josh Tongue"
+            },
+            {
+              "id": 10939,
+              "name": "Avishka Fernando",
+              "balls": 83,
+              "runs": 97,
+              "outdec": "c and b Jamie Overton"
+            },
+            {
+              "id": 9494,
+              "name": "Kusal Mendis",
+              "balls": 0,
+              "runs": 0,
+              "outdec": "run out (Gus Atkinson)"
+            },
+            {
+              "id": 15081,
+              "name": "Pavan Rathnayake",
+              "balls": 106,
+              "runs": 130,
+              "outdec": "c Tom Banton b Sam Curran"
+            },
+            {
+              "id": 8422,
+              "name": "Dasun Shanaka",
+              "balls": 50,
+              "runs": 97,
+              "outdec": "c Tom Banton b Liam Dawson"
+            },
+            {
+              "id": 13694,
+              "name": "Janith Liyanage",
+              "balls": 27,
+              "runs": 61,
+              "outdec": "not out"
+            },
+            {
+              "id": 14022,
+              "name": "Sahan Arachchige",
+              "balls": 8,
+              "runs": 13,
+              "outdec": "c Will Jacks b Sam Curran"
+            },
+            {
+              "id": 14251,
+              "name": "Dunith Wellalage",
+              "balls": 7,
+              "runs": 8,
+              "outdec": "b Josh Tongue"
+            },
+            {
+              "id": 46926,
+              "name": "Eshan Malinga",
+              "balls": 1,
+              "runs": 0,
+              "outdec": "b Josh Tongue"
+            },
+            {
+              "id": 10938,
+              "name": "Asitha Fernando",
+              "balls": 1,
+              "runs": 1,
+              "outdec": "not out"
+            },
+            {
+              "id": 15067,
+              "name": "Dilshan Madushanka",
+              "balls": 0,
+              "runs": 0,
+              "outdec": ""
+            }
+          ],
+          "bowler": [
+            {
+              "id": 13681,
+              "name": "Gus Atkinson",
+              "balls": 42,
+              "overs": "7",
+              "runs": 57,
+              "wickets": 0
+            },
+            {
+              "id": 12747,
+              "name": "Josh Tongue",
+              "balls": 53,
+              "overs": "8.5",
+              "runs": 79,
+              "wickets": 3
+            },
+            {
+              "id": 8512,
+              "name": "Jamie Overton",
+              "balls": 60,
+              "overs": "10",
+              "runs": 77,
+              "wickets": 1
+            },
+            {
+              "id": 6639,
+              "name": "Liam Dawson",
+              "balls": 60,
+              "overs": "10",
+              "runs": 71,
+              "wickets": 1
+            },
+            {
+              "id": 10420,
+              "name": "Sam Curran",
+              "balls": 54,
+              "overs": "9",
+              "runs": 103,
+              "wickets": 2
+            },
+            {
+              "id": 12258,
+              "name": "Will Jacks",
+              "balls": 30,
+              "overs": "5",
+              "runs": 41,
+              "wickets": 0
+            }
+          ]
+        }
+      ]
+    },
+    "expected": {
+      "runs": [
+        429,
+        430
+      ],
+      "balls": [
+        300,
+        299
+      ],
+      "dismissals": [
+        4,
+        8
+      ],
+      "winner": 5,
+      "margin": 2,
+      "method": "wickets"
+    }
+  },
+  {
+    "match": {
+      "matchId": 147931,
+      "seriesId": 11595,
+      "seriesName": "Australia tour of South Africa, 2026",
+      "matchDesc": "2nd Test",
+      "matchFormat": "TEST",
+      "startDate": "1792310400000",
+      "endDate": "1792681200000",
+      "state": "Complete",
+      "status": "South Africa won by an innings and 31 runs",
+      "team1": {
+        "teamId": 11,
+        "teamName": "South Africa",
+        "teamSName": "RSA",
+        "imageId": 776287
+      },
+      "team2": {
+        "teamId": 4,
+        "teamName": "Australia",
+        "teamSName": "AUS",
+        "imageId": 776202
+      },
+      "venueInfo": {
+        "id": 73,
+        "ground": "St George's Park",
+        "city": "Gqeberha",
+        "timezone": "+02:00",
+        "latitude": "-33.966545",
+        "longitude": "25.610332"
+      },
+      "currBatTeamId": 11,
+      "seriesStartDt": "1790208000000",
+      "seriesEndDt": "1793577600000",
+      "isTimeAnnounced": true,
+      "stateTitle": "RSA Won",
+      "hideScoreStatus": "Match completed"
+    },
+    "card": {
+      "status": "South Africa won by an innings and 31 runs",
+      "ismatchcomplete": true,
+      "responselastupdated": 1792853478,
+      "scorecard": [
+        {
+          "inningsid": 1,
+          "batteamname": "South Africa",
+          "score": 425,
+          "wickets": 9,
+          "overs": 127.1,
+          "ballnbr": 763,
+          "extras": {
+            "legbyes": 8,
+            "byes": 0,
+            "wides": 5,
+            "noballs": 1,
+            "penalty": 0,
+            "total": 14
+          },
+          "batsman": [
+            {
+              "id": 9582,
+              "name": "Aiden Markram",
+              "balls": 28,
+              "runs": 11,
+              "outdec": "b Scott Boland"
+            },
+            {
+              "id": 12188,
+              "name": "Marques Ackerman",
+              "balls": 38,
+              "runs": 6,
+              "outdec": "c Alex Carey b Scott Boland"
+            },
+            {
+              "id": 14265,
+              "name": "David Bedingham",
+              "balls": 1,
+              "runs": 0,
+              "outdec": "c Alex Carey b Scott Boland"
+            },
+            {
+              "id": 8583,
+              "name": "Temba Bavuma",
+              "balls": 334,
+              "runs": 179,
+              "outdec": "c Alex Carey b Mitchell Starc"
+            },
+            {
+              "id": 13089,
+              "name": "Matthew Breetzke",
+              "balls": 17,
+              "runs": 4,
+              "outdec": "c Alex Carey b Mitchell Starc"
+            },
+            {
+              "id": 13070,
+              "name": "Ryan Rickelton",
+              "balls": 51,
+              "runs": 31,
+              "outdec": "c Matt Renshaw b Scott Boland"
+            },
+            {
+              "id": 11200,
+              "name": "Wiaan Mulder",
+              "balls": 38,
+              "runs": 13,
+              "outdec": "c Matt Renshaw b Mitchell Starc"
+            },
+            {
+              "id": 14565,
+              "name": "Marco Jansen",
+              "balls": 100,
+              "runs": 85,
+              "outdec": "c Travis Head b Scott Boland"
+            },
+            {
+              "id": 9540,
+              "name": "Simon Harmer",
+              "balls": 157,
+              "runs": 82,
+              "outdec": "b Marnus Labuschagne"
+            },
+            {
+              "id": 9585,
+              "name": "Kagiso Rabada",
+              "balls": 0,
+              "runs": 0,
+              "outdec": "not out"
+            },
+            {
+              "id": 11427,
+              "name": "Anrich Nortje",
+              "balls": 0,
+              "runs": 0,
+              "outdec": ""
+            }
+          ],
+          "bowler": [
+            {
+              "id": 7710,
+              "name": "Mitchell Starc",
+              "balls": 145,
+              "overs": "24.1",
+              "runs": 89,
+              "wickets": 3
+            },
+            {
+              "id": 6258,
+              "name": "Josh Hazlewood",
+              "balls": 84,
+              "overs": "14",
+              "runs": 43,
+              "wickets": 0
+            },
+            {
+              "id": 8631,
+              "name": "Scott Boland",
+              "balls": 174,
+              "overs": "29",
+              "runs": 81,
+              "wickets": 5
+            },
+            {
+              "id": 8095,
+              "name": "Pat Cummins",
+              "balls": 156,
+              "overs": "26",
+              "runs": 96,
+              "wickets": 0
+            },
+            {
+              "id": 8646,
+              "name": "Beau Webster",
+              "balls": 114,
+              "overs": "19",
+              "runs": 43,
+              "wickets": 0
+            },
+            {
+              "id": 10055,
+              "name": "Matt Renshaw",
+              "balls": 48,
+              "overs": "8",
+              "runs": 33,
+              "wickets": 0
+            },
+            {
+              "id": 6261,
+              "name": "Nic Maddinson",
+              "balls": 30,
+              "overs": "5",
+              "runs": 24,
+              "wickets": 0
+            },
+            {
+              "id": 10182,
+              "name": "Marnus Labuschagne",
+              "balls": 12,
+              "overs": "2",
+              "runs": 8,
+              "wickets": 1
+            }
+          ]
+        },
+        {
+          "inningsid": 2,
+          "batteamname": "Australia",
+          "score": 99,
+          "wickets": 10,
+          "overs": 42.3,
+          "ballnbr": 255,
+          "extras": {
+            "legbyes": 1,
+            "byes": 4,
+            "wides": 0,
+            "noballs": 1,
+            "penalty": 0,
+            "total": 6
+          },
+          "batsman": [
+            {
+              "id": 6261,
+              "name": "Nic Maddinson",
+              "balls": 4,
+              "runs": 0,
+              "outdec": "c Simon Harmer b Kagiso Rabada"
+            },
+            {
+              "id": 8497,
+              "name": "Travis Head",
+              "balls": 24,
+              "runs": 14,
+              "outdec": "lbw b Marco Jansen"
+            },
+            {
+              "id": 8631,
+              "name": "Scott Boland",
+              "balls": 14,
+              "runs": 2,
+              "outdec": "c Ryan Rickelton b Marco Jansen"
+            },
+            {
+              "id": 10182,
+              "name": "Marnus Labuschagne",
+              "balls": 25,
+              "runs": 14,
+              "outdec": "c Simon Harmer b Anrich Nortje"
+            },
+            {
+              "id": 2250,
+              "name": "Steven Smith",
+              "balls": 88,
+              "runs": 28,
+              "outdec": "b Wiaan Mulder"
+            },
+            {
+              "id": 10055,
+              "name": "Matt Renshaw",
+              "balls": 48,
+              "runs": 12,
+              "outdec": "c Simon Harmer b Marco Jansen"
+            },
+            {
+              "id": 9200,
+              "name": "Alex Carey",
+              "balls": 2,
+              "runs": 0,
+              "outdec": "c Ryan Rickelton b Marco Jansen"
+            },
+            {
+              "id": 8646,
+              "name": "Beau Webster",
+              "balls": 28,
+              "runs": 13,
+              "outdec": "c Aiden Markram b Marco Jansen"
+            },
+            {
+              "id": 8095,
+              "name": "Pat Cummins",
+              "balls": 16,
+              "runs": 7,
+              "outdec": "c Matthew Breetzke b Wiaan Mulder"
+            },
+            {
+              "id": 7710,
+              "name": "Mitchell Starc",
+              "balls": 4,
+              "runs": 1,
+              "outdec": "c Ryan Rickelton b Kagiso Rabada"
+            },
+            {
+              "id": 6258,
+              "name": "Josh Hazlewood",
+              "balls": 3,
+              "runs": 2,
+              "outdec": "not out"
+            }
+          ],
+          "bowler": [
+            {
+              "id": 9585,
+              "name": "Kagiso Rabada",
+              "balls": 72,
+              "overs": "12",
+              "runs": 33,
+              "wickets": 2
+            },
+            {
+              "id": 9540,
+              "name": "Simon Harmer",
+              "balls": 33,
+              "overs": "5.3",
+              "runs": 9,
+              "wickets": 0
+            },
+            {
+              "id": 9582,
+              "name": "Aiden Markram",
+              "balls": 6,
+              "overs": "1",
+              "runs": 0,
+              "wickets": 0
+            },
+            {
+              "id": 14565,
+              "name": "Marco Jansen",
+              "balls": 66,
+              "overs": "11",
+              "runs": 33,
+              "wickets": 5
+            },
+            {
+              "id": 11427,
+              "name": "Anrich Nortje",
+              "balls": 21,
+              "overs": "3.3",
+              "runs": 5,
+              "wickets": 1
+            },
+            {
+              "id": 11200,
+              "name": "Wiaan Mulder",
+              "balls": 57,
+              "overs": "9.3",
+              "runs": 14,
+              "wickets": 2
+            }
+          ]
+        },
+        {
+          "inningsid": 3,
+          "batteamname": "Australia",
+          "score": 295,
+          "wickets": 10,
+          "overs": 107.1,
+          "ballnbr": 643,
+          "extras": {
+            "legbyes": 5,
+            "byes": 4,
+            "wides": 0,
+            "noballs": 4,
+            "penalty": 0,
+            "total": 13
+          },
+          "batsman": [
+            {
+              "id": 6261,
+              "name": "Nic Maddinson",
+              "balls": 10,
+              "runs": 8,
+              "outdec": "c Ryan Rickelton b Kagiso Rabada"
+            },
+            {
+              "id": 8497,
+              "name": "Travis Head",
+              "balls": 190,
+              "runs": 121,
+              "outdec": "b Wiaan Mulder"
+            },
+            {
+              "id": 10182,
+              "name": "Marnus Labuschagne",
+              "balls": 98,
+              "runs": 39,
+              "outdec": "c Marco Jansen b Simon Harmer"
+            },
+            {
+              "id": 10055,
+              "name": "Matt Renshaw",
+              "balls": 23,
+              "runs": 11,
+              "outdec": "b Kagiso Rabada"
+            },
+            {
+              "id": 8646,
+              "name": "Beau Webster",
+              "balls": 33,
+              "runs": 8,
+              "outdec": "lbw b Simon Harmer"
+            },
+            {
+              "id": 8631,
+              "name": "Scott Boland",
+              "balls": 166,
+              "runs": 40,
+              "outdec": "b Wiaan Mulder"
+            },
+            {
+              "id": 2250,
+              "name": "Steven Smith",
+              "balls": 20,
+              "runs": 3,
+              "outdec": "c Matthew Breetzke b Kagiso Rabada"
+            },
+            {
+              "id": 9200,
+              "name": "Alex Carey",
+              "balls": 69,
+              "runs": 37,
+              "outdec": "not out"
+            },
+            {
+              "id": 8095,
+              "name": "Pat Cummins",
+              "balls": 8,
+              "runs": 4,
+              "outdec": "b Wiaan Mulder"
+            },
+            {
+              "id": 7710,
+              "name": "Mitchell Starc",
+              "balls": 28,
+              "runs": 11,
+              "outdec": "b Kagiso Rabada"
+            },
+            {
+              "id": 6258,
+              "name": "Josh Hazlewood",
+              "balls": 2,
+              "runs": 0,
+              "outdec": "c Aiden Markram b Marco Jansen"
+            }
+          ],
+          "bowler": [
+            {
+              "id": 9585,
+              "name": "Kagiso Rabada",
+              "balls": 138,
+              "overs": "23",
+              "runs": 77,
+              "wickets": 4
+            },
+            {
+              "id": 14565,
+              "name": "Marco Jansen",
+              "balls": 103,
+              "overs": "17.1",
+              "runs": 34,
+              "wickets": 1
+            },
+            {
+              "id": 11200,
+              "name": "Wiaan Mulder",
+              "balls": 126,
+              "overs": "21",
+              "runs": 64,
+              "wickets": 3
+            },
+            {
+              "id": 9540,
+              "name": "Simon Harmer",
+              "balls": 234,
+              "overs": "39",
+              "runs": 93,
+              "wickets": 2
+            },
+            {
+              "id": 9582,
+              "name": "Aiden Markram",
+              "balls": 42,
+              "overs": "7",
+              "runs": 18,
+              "wickets": 0
+            }
+          ]
+        }
+      ]
+    },
+    "expected": {
+      "runs": [
+        425,
+        99,
+        295
+      ],
+      "balls": [
+        763,
+        255,
+        643
+      ],
+      "dismissals": [
+        9,
+        10,
+        10
+      ],
+      "winner": 11,
+      "margin": 31,
+      "method": "innings"
+    }
+  }
+]

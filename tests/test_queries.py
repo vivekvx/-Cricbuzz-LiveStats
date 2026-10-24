@@ -368,3 +368,18 @@ def test_quarter_analysis_uses_explicit_recent_window(db):
     with connect(db) as c:
         c.execute("UPDATE matches SET match_date='2000-01-01' WHERE id<=48")
     assert query(db, 25) == []  # Only two recent qualifying quarters remain.
+
+
+def test_unclassified_games_do_not_qualify_as_international_cross_format(db):
+    with connect(db) as c:
+        c.execute("UPDATE matches SET format='Other' WHERE format<>'Test'")
+    assert query(db, 11) == []
+    rows = query(db, 20)
+    assert len(rows) == 8
+    assert all(
+        r["total_matches"] == 20
+        and r["test_matches"] == 20
+        and r["odi_matches"] == 0
+        and r["t20_matches"] == 0
+        for r in rows
+    )

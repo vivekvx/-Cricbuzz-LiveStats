@@ -4,7 +4,7 @@ Completed locally on 24 October 2026 using Python 3.11, SQLite, Streamlit 1.50.0
 
 ## Automated verification
 
-Final full run: **99 passed in 2.97 seconds** using `.venv/bin/python -m pytest -q`.
+Final full run: **112 passed in 2.90 seconds** using `.venv/bin/python -m pytest -q`.
 
 - Every Q1–Q25 has an individual expected-answer test: rows, totals, means, eligibility, ranks or classes, rather than only checking execution.
 - All 25 also run against an empty database and return empty results gracefully.
@@ -17,7 +17,7 @@ Final full run: **99 passed in 2.97 seconds** using `.venv/bin/python -m pytest 
 - SQL security tests reject writes, DDL, PRAGMA, ATTACH, extension loading, multiple statements and write CTEs; valid read CTEs work. Row limits and bounded recursive-query execution are tested.
 - Streamlit AppTest checks all five pages, live missing-key state without sample fallback, SQL execution/rejection, persisted create forms and batting/bowling management forms.
 
-Static verification: `ruff check .` passed; `ruff format --check .` reported all 38 Python files formatted. No test or lint failure remains in the final run.
+Static verification: `ruff check .` passed; `ruff format --check .` reported all 44 Python files formatted. No test or lint failure remains in the final run.
 
 ## Actual browser verification
 
@@ -44,3 +44,9 @@ The current run has 98 passing tests. The missing-key Home state now explains wh
 ## Cross-page data source persistence
 
 The source selector now stores its value independently of page-specific widgets. A multipage regression switches Live API through Home and all four modules, then switches explicitly to Sample Data and verifies that choice survives navigation. Current full suite: 99 passed.
+
+## Live-data accuracy audit
+
+Ten authenticated requests captured three match lists, T20I/ODI/Test scorecards, match information and one player’s profile/career tables. The isolated import passed 268 checks across 86 unique matches, 66 players and seven innings. Totals/results were cross-checked against indexed Cricbuzz/ICC listings. See LIVE_DATA_AUDIT.md for evidence and limits, including an upstream 0.01 strike-rate discrepancy.
+
+New regressions cover real three-format cards, domestic/unofficial/warm-up exclusion, explicit result parsing, outcome retention under incomplete/cached refreshes, saved-data migration, timestamps, missing-metadata disclosures and legacy did-not-bat rows. Independent review identified result-erasure and T20 warm-up classification defects; both were corrected before the final 112-test run.

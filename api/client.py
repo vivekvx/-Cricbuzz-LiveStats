@@ -80,7 +80,9 @@ class Client:
             except ValueError:
                 raise ApiError("Provider returned invalid JSON.", "schema") from None
             if not isinstance(payload, dict):
-                raise ApiError("Expected a JSON object from the configured v1 provider.", "schema")
+                raise ApiError(
+                    "Expected a JSON object from the configured Cricbuzz provider.", "schema"
+                )
             return payload
         raise ApiError("Provider unavailable after bounded retries.")
 

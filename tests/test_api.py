@@ -226,3 +226,103 @@ def test_profile_null_bowling_style_and_keeper_role(tmp_path):
     assert player["role"] == "Wicket-keeper"
     assert player["bowling_style"] == "Unknown"
     assert player["full_name"] == "Fixture Full Keeper"
+
+
+def test_domestic_and_unofficial_games_are_not_international_formats(payload):
+    group = payload["typeMatches"][0]
+    match = group["seriesMatches"][1]["seriesAdWrapper"]["matches"][0]["matchInfo"]
+    group["matchType"] = "Domestic"
+    for fmt in ["TEST", "ODI"]:
+        match["matchFormat"] = fmt
+        assert normalize_matches(payload)[0]["format"] == "Other"
+    group["matchType"] = "International"
+    match["matchFormat"] = "TEST"
+    match["matchDesc"] = "1st Unofficial Test"
+    assert normalize_matches(payload)[0]["format"] == "Other"
+    match["matchDesc"] = "2nd Test"
+    assert normalize_matches(payload)[0]["format"] == "Test"
+    match["matchDesc"] = "2-Day Warm-Up Match"
+    assert normalize_matches(payload)[0]["format"] == "Other"
+
+
+def test_completed_result_and_schedule_updates_are_persisted(tmp_path, payload):
+    path = tmp_path / "live.sqlite3"
+    initialize(path)
+    info = payload["typeMatches"][0]["seriesMatches"][1]["seriesAdWrapper"]["matches"][0][
+        "matchInfo"
+    ]
+    info["state"] = "Complete"
+    info["status"] = "Fixture Team A won by 4 wkts"
+    ingest_matches(path, payload)
+    assert read_query(path, "SELECT winner_id,margin,victory_type FROM matches") == [
+        {"winner_id": 901, "margin": 4, "victory_type": "wickets"}
+    ]
+    info["startDate"] = "1792320000000"
+    ingest_matches(path, payload)
+    assert read_query(path, "SELECT match_date FROM matches")[0]["match_date"] == "2026-10-18"
+
+
+def test_explicit_result_parser_never_guesses():
+    from services.results import result_fields
+
+    teams = [{"teamName": "India", "teamId": 2}, {"teamName": "South Africa", "teamId": 11}]
+    assert result_fields("India won by 4 wkts", teams) == (2, 4, "wickets")
+    assert result_fields("South Africa won by an innings and 31 runs", teams) == (11, 31, "innings")
+    assert result_fields("India won by 20 runs (DLS Method)", teams) == (2, 20, "runs")
+    assert result_fields("India need 4 runs", teams) == (None, None, None)
+    assert result_fields("Match drawn", teams) == (None, None, None)
+    assert result_fields("Unknown Team won by 2 runs", teams) == (None, None, None)
+
+
+def test_legacy_scorecard_excludes_did_not_bat(tmp_path, payload, card):
+    path = tmp_path / "legacy.sqlite3"
+    initialize(path)
+    ingest_matches(path, payload)
+    card["scoreCard"][0]["batTeamDetails"]["batsmenData"]["bat_2"] = {
+        "batId": 8003,
+        "batName": "Bench Fixture",
+        "runs": 0,
+        "balls": 0,
+        "outDesc": "",
+    }
+    ingest_scorecard(path, 9001, card)
+    assert len(read_query(path, "SELECT * FROM batting")) == 1
+    assert len(read_query(path, "SELECT * FROM participants")) == 3
+
+
+def test_incomplete_refresh_never_erases_a_confirmed_result(tmp_path, payload):
+    path = tmp_path / "live.sqlite3"
+    initialize(path)
+    info = payload["typeMatches"][0]["seriesMatches"][1]["seriesAdWrapper"]["matches"][0][
+        "matchInfo"
+    ]
+    info["state"] = "Complete"
+    info["status"] = "Fixture Team A won by 20 runs"
+    ingest_matches(path, payload)
+    ingest_scorecard(path, 9001, {"scorecard": [], "ismatchcomplete": True})
+    assert read_query(path, "SELECT winner_id,margin FROM matches") == [
+        {"winner_id": 901, "margin": 20}
+    ]
+    info["status"] = ""
+    ingest_matches(path, payload)
+    assert read_query(path, "SELECT winner_id,margin FROM matches") == [
+        {"winner_id": 901, "margin": 20}
+    ]
+    info["state"] = "In Progress"
+    info["status"] = "Fixture Team B need 10 runs"
+    ingest_matches(path, payload)
+    assert read_query(path, "SELECT status,winner_id,margin FROM matches") == [
+        {"status": "Complete", "winner_id": 901, "margin": 20}
+    ]
+    info["state"] = "Complete"
+    info["status"] = "Match drawn"
+    ingest_matches(path, payload)
+    assert read_query(path, "SELECT winner_id,margin FROM matches") == [
+        {"winner_id": None, "margin": None}
+    ]
+
+
+def test_international_t20_warmup_is_not_t20i():
+    assert cricket_format("T20", True, "1st Warm-up match") == "Other"
+    assert cricket_format("T20", True, "Unofficial T20") == "Other"
+    assert cricket_format("T20", True, "2nd T20I") == "T20I"
