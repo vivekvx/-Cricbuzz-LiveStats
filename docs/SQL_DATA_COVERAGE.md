@@ -54,3 +54,9 @@ The local live database had eight listed matches and the same one-scorecard cove
 - Five regression tests cover the one-scorecard scenario, different Q9/Q16 evidence, all 25 sample results, query errors, UI source switching and the all-question check. Full suite: 118 passed locally.
 
 A complete real-history ingestion pipeline remains required for all 25 questions to have meaningful real-world answers. This change makes the limitation inspectable; it does not manufacture historical records or claim that fixture listings are full scorecards.
+
+## Hosted verification after deployment
+
+The deployed all-question check reported **Live API: 10/25 questions have results; 15 have no qualifying rows; 0 failed**. On the hosted Sample Data database, it reported **25/25 have results; 0 empty; 0 failed**. The new Q9 explanation showed zero imported known all-rounders, and Q16 measured a maximum of one eligible yearly appearance against its minimum of five. This confirms a data-coverage limitation rather than all question selectors executing the same SQL.
+
+The implementation commit e6c5979 passed GitHub Actions on both Python 3.11 and 3.14: https://github.com/vivekvx/-Cricbuzz-LiveStats/actions/runs/40110415697 .
