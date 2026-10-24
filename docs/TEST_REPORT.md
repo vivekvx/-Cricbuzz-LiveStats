@@ -1,0 +1,30 @@
+# Verification report
+
+Completed locally on 24 October 2026 using Python 3.11, SQLite, Streamlit 1.50.0, pandas 2.3.3 and requests 2.32.5 on macOS.
+
+## Automated verification
+
+Final full run: **84 passed in 2.07 seconds** using `.venv/bin/python -m pytest -q`.
+
+- Every Q1–Q25 has an individual expected-answer test: rows, totals, means, eligibility, ranks or classes, rather than only checking execution.
+- All 25 also run against an empty database and return empty results gracefully.
+- Additional tests cover future dates and date-window boundaries, strict score thresholds, minimum balls, multiple Test innings without duplicate match counts, canonical team-pair direction, insufficient partnerships/quarters, Good/Average/Poor and declining/stable classifications.
+- Ranking checks independently calculate weighted points, protect non-bowlers from an invented bowling bonus, and retain fielding-only performers.
+- Arithmetic tests independently verify cricket overs, batting/strike/economy/win formulas, division by zero and population standard deviation.
+- Database tests check foreign keys, rollback, repeatable initialization/seeding, SQL-only fixture loading and negative-count constraints.
+- CRUD tests verify create/read/update/delete persistence, duplicate validation, protected referenced players, batting/bowling updates and correct-team eligibility.
+- API tests use labeled synthetic contract fixtures for parsing, retry bounds, timeouts, missing keys, unauthorized/rate-limit/server/schema failures, input validation, idempotent ingestion, provenance, career snapshot separation and international/domestic T20 classification.
+- SQL security tests reject writes, DDL, PRAGMA, ATTACH, extension loading, multiple statements and write CTEs; valid read CTEs work. Row limits and bounded recursive-query execution are tested.
+- Streamlit AppTest checks all five pages, live missing-key state without sample fallback, SQL execution/rejection, persisted create forms and batting/bowling management forms.
+
+Static verification: `ruff check .` passed; `ruff format --check .` reported all 37 Python files formatted. No test or lint failure remains in the final run.
+
+## Actual browser verification
+
+`scripts/record_demo.py` drove installed Google Chrome through 13 stages. It captured Home, synthetic Match centre and innings cards, ODI player statistics, beginner/intermediate/advanced SQL, destructive SQL rejection and the complete player CRUD lifecycle. The recorder also checked the database after creation, update and deletion. Browser page errors: **0**. Stage screenshots are in `docs/demo_frames/` and machine-readable recording evidence is in `docs/demo_recording.json`.
+
+The browser recording was converted to `docs/demo.mp4`. FFprobe confirmed **H.264, 1440×1000, 41.64 seconds**, 1,758,676 bytes. It is a silent recording of actual UI interactions, not a mockup or a slideshow.
+
+## External verification boundary
+
+No subscribed RapidAPI key was supplied; no authenticated Cricbuzz response or account-specific entitlement was tested. Public provider operation discovery and legacy path cross-checking are recorded in API_SETUP.md. Test fixtures are synthetic examples, not captured API responses. Exact paid/free access, quotas, pagination/retention and continued v1 account availability remain externally blocked. Sample-mode completion and local API contract/error tests do not imply verified live-provider access.

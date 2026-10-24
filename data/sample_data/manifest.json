@@ -1,0 +1,11 @@
+{
+  "source": "synthetic-v1",
+  "generator": "database/seed.py",
+  "reference_date": "2026-10-24",
+  "real_cricket_data": false,
+  "description": "Deterministic fictional academic fixtures, not historical records or captured API responses.",
+  "coverage": {"players": 8, "matches": 60, "innings": 120, "batting_rows": 480, "bowling_rows": 240},
+  "dates": "Nine quarters from 2024Q1 through 2026Q1, plus six fixtures in October 2026",
+  "partnerships": "Adjacent-position combined-score proxies only",
+  "limitations": "Abbreviated scorecards; synthetic result margins are independent oracle inputs, not a simulated cricket result. Repeated opposing performances are intentional."
+}
