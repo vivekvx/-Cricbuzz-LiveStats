@@ -19,8 +19,14 @@ from services.ingestion import ingest_matches, ingest_scorecard
 from services.player_service import fetch_player
 
 
+def remember_data_mode():
+    """Keep the selected source outside page-specific widget state."""
+    st.session_state["selected_data_mode"] = st.session_state["data_mode"]
+
+
 def start_demo():
     """Explicitly select synthetic data and its reproducible reference date."""
+    st.session_state["selected_data_mode"] = "Sample Data"
     st.session_state["data_mode"] = "Sample Data"
     st.session_state["as_of_Sample Data"] = date.fromisoformat(DEMO_DATE)
 
@@ -40,7 +46,11 @@ def setup(title):
         unsafe_allow_html=True,
     )
     st.sidebar.title("🏏 LiveStats")
-    mode = st.sidebar.selectbox("Data source", ["Sample Data", "Live API"], key="data_mode")
+    st.session_state["data_mode"] = st.session_state.get("selected_data_mode", "Sample Data")
+    mode = st.sidebar.selectbox(
+        "Data source", ["Sample Data", "Live API"], key="data_mode", on_change=remember_data_mode
+    )
+    st.session_state["selected_data_mode"] = mode
     path = database_path(mode)
     if mode == "Sample Data":
         seed(path)

@@ -92,3 +92,21 @@ def test_missing_cloud_key_has_working_one_click_demo(app_data):
     assert at.metric[0].value == "60"
     assert at.metric[1].value == "8"
     assert at.metric[3].value == "25"
+
+
+def test_data_source_survives_navigation_across_all_modules(app_data):
+    at = AppTest.from_file(str(ROOT / "main.py")).run()
+    at.sidebar.selectbox[0].select("Live API").run()
+    for page in [
+        "pages/1_Live_Matches.py",
+        "pages/2_Top_Player_Stats.py",
+        "pages/3_SQL_Analytics.py",
+        "pages/4_CRUD_Operations.py",
+        "main.py",
+    ]:
+        at.switch_page(page).run()
+        assert not at.exception
+        assert at.sidebar.selectbox[0].value == "Live API"
+    next(b for b in at.button if b.label == "Start demo with sample data").click().run()
+    at.switch_page("pages/3_SQL_Analytics.py").run()
+    assert at.sidebar.selectbox[0].value == "Sample Data"

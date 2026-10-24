@@ -4,7 +4,7 @@ Completed locally on 24 October 2026 using Python 3.11, SQLite, Streamlit 1.50.0
 
 ## Automated verification
 
-Final full run: **98 passed in 2.85 seconds** using `.venv/bin/python -m pytest -q`.
+Final full run: **99 passed in 2.97 seconds** using `.venv/bin/python -m pytest -q`.
 
 - Every Q1–Q25 has an individual expected-answer test: rows, totals, means, eligibility, ranks or classes, rather than only checking execution.
 - All 25 also run against an empty database and return empty results gracefully.
@@ -40,3 +40,7 @@ The current run has 97 passing tests, including secrets configuration, hosted-st
 ## Hosted missing-key recovery
 
 The current run has 98 passing tests. The missing-key Home state now explains why live counts are zero, links the owner to Cloud Secrets instructions, and provides an explicit one-click switch to the seeded demo with its reference date. AppTest verifies the recovered 60-match/eight-player/25-question state.
+
+## Cross-page data source persistence
+
+The source selector now stores its value independently of page-specific widgets. A multipage regression switches Live API through Home and all four modules, then switches explicitly to Sample Data and verifies that choice survives navigation. Current full suite: 99 passed.
