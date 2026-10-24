@@ -4,7 +4,7 @@ Completed locally on 24 October 2026 using Python 3.11, SQLite, Streamlit 1.50.0
 
 ## Automated verification
 
-Final full run: **87 passed in 2.48 seconds** using `.venv/bin/python -m pytest -q`.
+Final full run: **92 passed in 2.69 seconds** using `.venv/bin/python -m pytest -q`.
 
 - Every Q1–Q25 has an individual expected-answer test: rows, totals, means, eligibility, ranks or classes, rather than only checking execution.
 - All 25 also run against an empty database and return empty results gracefully.
@@ -28,3 +28,7 @@ The browser recording was converted to `docs/demo.mp4`. FFprobe confirmed **H.26
 ## Authenticated follow-up verification
 
 A user-provided key was subsequently configured privately and authenticated requests succeeded for live matches, a current scorecard, player profile and batting/bowling career tables. Eight real provider-listed matches, two innings, 15 batting rows, 12 bowling rows and six career format/discipline snapshots were stored in the separate live database. Current scorecard regression tests cover the captured response, team resolution, repeated ingestion, did-not-bat rows and dismissal status; nullable bowling styles and provider keeper-role mapping are also tested. See LIVE_VERIFICATION.md for exact scope. Exact plan entitlements, API quotas and complete historical coverage remain unverified.
+
+## Subsequent compliance audit
+
+See COMPLIANCE_AUDIT.md for corrected Q12/Q16/Q23/Q25 semantics and five new regression cases. The current final run has 92 passing tests.

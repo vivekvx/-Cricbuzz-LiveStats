@@ -13,10 +13,12 @@ Q13/Q24 use adjacent batting-position combined-score proxies, never actual partn
 Q17 excludes no-result/tie matches with no winner. Q19 uses population standard deviation and >=10 balls per eligible innings.
 Q21 missing disciplines and undefined average terms contribute zero; no 25-point bowling bonus is awarded to non-bowlers.
 Q23 Excellent: last5 mean >=50, >=last10 mean, last5 SR >=last10 SR, population SD <=30, >=3 scores >50;
-otherwise Good >=35, Average >=20, Poor <20. Fewer than ten innings are reported with their count; fifty-plus here means >50 per the source document.
+otherwise Good >=35, Average >=20, Poor <20. Fewer than ten batting matches are reported with their count; fifty-plus here means >50 per the source document.
 Q25 improving/declining means a change strictly above +5/below -5 runs; otherwise stable.
 Career ascending/declining means final minus first qualifying quarter strictly above +10/below -10 runs; otherwise stable.
-Gaps compare adjacent observed qualifying quarters; the output preserves year and quarter so missing periods are visible.
+Q23 averages/stddev use match runs (both Test innings combined); fifty-plus counts still refer to individual innings.
+Q25 uses a trailing three-year window ending at :as_of. DNB appearances count as matches with zero runs and undefined strike rate.
+Quarter changes across missing/nonqualifying quarters are NULL and explicitly marked as a gap.
 Sample date windows use a visible 2026-10-24 reference date; live mode defaults to today's local date.
 
 
@@ -151,12 +153,25 @@ Pivot format totals; overall average is total runs divided by dismissals.
 Analyze each international team's performance when playing at home versus playing away. Determine whether each team played at home or away based on whether the venue country matches the team's country. Count wins for each team in both home and away conditions.
 
 ```sql
-SELECT t.name,CASE WHEN v.country=t.country THEN 'Home' ELSE 'Away' END conditions,COUNT(*) wins
-FROM matches m JOIN teams t ON t.id=m.winner_id JOIN venues v ON v.id=m.venue_id
-WHERE m.status='Complete' AND v.country<>'Unknown' AND t.country<>'Unknown' GROUP BY t.id,conditions ORDER BY t.name,conditions;
+WITH appearances AS (
+ SELECT id match_id,team1_id team_id,venue_id,winner_id FROM matches WHERE status='Complete'
+ UNION ALL
+ SELECT id,team2_id,venue_id,winner_id FROM matches WHERE status='Complete'),
+ results AS (
+ SELECT a.team_id,CASE WHEN v.country=t.country THEN 'Home' ELSE 'Away' END conditions,
+ COUNT(*) matches,SUM(CASE WHEN a.winner_id=a.team_id THEN 1 ELSE 0 END) wins
+ FROM appearances a JOIN teams t ON t.id=a.team_id JOIN venues v ON v.id=a.venue_id
+ WHERE v.country<>'Unknown' AND t.country<>'Unknown'
+ GROUP BY a.team_id,conditions),
+ conditions AS (SELECT 'Home' conditions UNION ALL SELECT 'Away')
+SELECT t.name,c.conditions,COALESCE(r.matches,0) matches,COALESCE(r.wins,0) wins
+FROM teams t CROSS JOIN conditions c
+LEFT JOIN results r ON r.team_id=t.id AND r.conditions=c.conditions
+WHERE t.id IN (SELECT team_id FROM results)
+ORDER BY t.name,c.conditions;
 ```
 
-Compare venue and team countries; neutral venues count as away.
+Compare venue and team countries using team appearances; retain zero-win teams and both Home/Away rows. Neutral venues count as away.
 
 ## Q13 — Intermediate
 
@@ -208,13 +223,24 @@ Apply victory-method-specific margins; aggregate innings to player-match before 
 Track how players' batting performance changes over different years. For matches since 2020, show each player's average runs per match and average strike rate for each year. Only include players who played at least 5 matches in that year.
 
 ```sql
-SELECT p.full_name,strftime('%Y',b.match_date) year,1.0*SUM(b.runs)/COUNT(DISTINCT b.match_id) average_runs_per_match,
-AVG(b.strike_rate) average_strike_rate,COUNT(DISTINCT b.match_id) matches
-FROM batting_facts b JOIN players p ON p.id=b.player_id WHERE b.match_date>='2020-01-01'
-GROUP BY p.id,year HAVING COUNT(DISTINCT b.match_id)>=5 ORDER BY p.full_name,year;
+WITH eligible_matches AS (
+ SELECT id,match_date FROM matches WHERE match_date>='2020-01-01' AND status<>'Upcoming'),
+ appearances AS (
+ SELECT a.player_id,strftime('%Y',m.match_date) year,COUNT(*) matches
+ FROM participants a JOIN eligible_matches m ON m.id=a.match_id
+ GROUP BY a.player_id,year HAVING COUNT(*)>=5),
+ batting_by_year AS (
+ SELECT b.player_id,strftime('%Y',m.match_date) year,SUM(b.runs) runs,AVG(b.strike_rate) average_strike_rate
+ FROM batting_facts b JOIN eligible_matches m ON m.id=b.match_id
+ GROUP BY b.player_id,year)
+SELECT p.full_name,a.year,1.0*COALESCE(b.runs,0)/a.matches average_runs_per_match,
+b.average_strike_rate,a.matches
+FROM appearances a JOIN players p ON p.id=a.player_id
+LEFT JOIN batting_by_year b ON b.player_id=a.player_id AND b.year=a.year
+ORDER BY p.full_name,a.year;
 ```
 
-Group by player and year; divide runs by distinct matches and average innings strike rates.
+Count participant appearances for yearly eligibility and runs-per-match denominator; use the same non-upcoming match set for batting totals. Average strike rates over recorded batting innings.
 
 ## Q17 — Advanced
 
@@ -350,11 +376,16 @@ A consistency score based on standard deviation
 Based on these metrics, categorize players as being in "Excellent Form", "Good Form", "Average Form", or "Poor Form".
 
 ```sql
-WITH numbered AS (
- SELECT *,ROW_NUMBER() OVER(PARTITION BY player_id ORDER BY match_date DESC,match_id DESC,number DESC) rn FROM batting_facts),
+WITH per_match AS (
+ SELECT player_id,match_id,match_date,SUM(runs) runs,
+ 100.0*SUM(runs)/NULLIF(SUM(balls),0) strike_rate,SUM(runs>50) scores_above50
+ FROM batting_facts GROUP BY player_id,match_id),
+ numbered AS (
+ SELECT *,ROW_NUMBER() OVER(PARTITION BY player_id ORDER BY match_date DESC,match_id DESC) rn
+ FROM per_match),
  form AS (SELECT player_id,AVG(CASE WHEN rn<=5 THEN runs END) last5_average,AVG(runs) last10_average,
  AVG(CASE WHEN rn<=5 THEN strike_rate END) last5_strike_rate,AVG(strike_rate) last10_strike_rate,
- SUM(runs>50) scores_above50,stddev_pop(runs) standard_deviation,COUNT(*) performances
+ SUM(scores_above50) scores_above50,stddev_pop(runs) standard_deviation,COUNT(*) performances
  FROM numbered WHERE rn<=10 GROUP BY player_id)
 SELECT p.full_name,f.*,last5_strike_rate-last10_strike_rate strike_rate_trend,
 CASE WHEN last5_average>=50 AND last5_average>=last10_average AND last5_strike_rate>=last10_strike_rate AND standard_deviation<=30 AND scores_above50>=3 THEN 'Excellent Form'
@@ -362,7 +393,7 @@ CASE WHEN last5_average>=50 AND last5_average>=last10_average AND last5_strike_r
 FROM form f JOIN players p ON p.id=f.player_id ORDER BY last5_average DESC,p.id;
 ```
 
-Window the latest ten innings deterministically; compare last-five and last-ten means, strike rates and consistency. Thresholds appear in assumptions.
+Aggregate Test innings into player-match totals before selecting the latest ten batting matches; compare last-five and last-ten match means, strike rates and consistency. Count individual fifty-plus innings within that window. Thresholds appear in assumptions.
 
 ## Q24 — Advanced
 
@@ -411,22 +442,29 @@ Only analyze players with data spanning at least 6 quarters and a minimum of 3 m
 
 ```sql
 WITH per_match AS (
- SELECT player_id,match_id,match_date,SUM(runs) runs,100.0*SUM(runs)/NULLIF(SUM(balls),0) sr
- FROM batting_facts GROUP BY player_id,match_id),
+ SELECT a.player_id,a.match_id,m.match_date,COALESCE(SUM(b.runs),0) runs,
+ 100.0*SUM(b.runs)/NULLIF(SUM(b.balls),0) sr
+ FROM participants a JOIN matches m ON m.id=a.match_id
+ LEFT JOIN batting_facts b ON b.match_id=a.match_id AND b.player_id=a.player_id
+ WHERE m.status<>'Upcoming' AND m.match_date>=date(:as_of,'-3 years') AND m.match_date<=:as_of
+ GROUP BY a.player_id,a.match_id),
  quarters AS (
  SELECT player_id,CAST(strftime('%Y',match_date) AS INTEGER) year,
  (CAST(strftime('%m',match_date) AS INTEGER)-1)/3+1 quarter,AVG(runs) average_runs,AVG(sr) average_strike_rate,COUNT(*) matches
  FROM per_match GROUP BY player_id,year,quarter HAVING COUNT(*)>=3),
  eligible AS (SELECT player_id FROM quarters GROUP BY player_id HAVING COUNT(*)>=6),
- changes AS (SELECT q.*,average_runs-LAG(average_runs) OVER w runs_change,
- average_strike_rate-LAG(average_strike_rate) OVER w strike_rate_change,
+ changes AS (SELECT q.*,
+ LAG(year*4+quarter) OVER w previous_quarter_index,
+ CASE WHEN year*4+quarter-LAG(year*4+quarter) OVER w=1 THEN average_runs-LAG(average_runs) OVER w END runs_change,
+ CASE WHEN year*4+quarter-LAG(year*4+quarter) OVER w=1 THEN average_strike_rate-LAG(average_strike_rate) OVER w END strike_rate_change,
  FIRST_VALUE(average_runs) OVER w first_runs,
  LAST_VALUE(average_runs) OVER(PARTITION BY q.player_id ORDER BY year,quarter ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) last_runs
  FROM quarters q JOIN eligible e ON e.player_id=q.player_id WINDOW w AS(PARTITION BY q.player_id ORDER BY year,quarter))
 SELECT p.full_name,c.*,
-CASE WHEN runs_change IS NULL THEN 'Baseline' WHEN runs_change>5 THEN 'Improving' WHEN runs_change< -5 THEN 'Declining' ELSE 'Stable' END quarter_trend,
+CASE WHEN previous_quarter_index IS NULL THEN 'Baseline' WHEN runs_change IS NULL THEN 'Gap: no prior qualifying quarter'
+ WHEN runs_change>5 THEN 'Improving' WHEN runs_change< -5 THEN 'Declining' ELSE 'Stable' END quarter_trend,
 CASE WHEN last_runs-first_runs>10 THEN 'Career Ascending' WHEN last_runs-first_runs< -10 THEN 'Career Declining' ELSE 'Career Stable' END career_trajectory
 FROM changes c JOIN players p ON p.id=c.player_id ORDER BY p.full_name,year,quarter;
 ```
 
-Aggregate per player-match, retain quarters with three matches and players with six such quarters, then use LAG and first/last values.
+Use participant match appearances over the trailing three years, retain quarters with three matches and players with six such quarters, then compare only adjacent calendar quarters. Show gaps without inventing quarter-on-quarter changes.

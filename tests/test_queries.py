@@ -104,9 +104,11 @@ def test_q11(db):
 
 def test_q12(db):
     rows = query(db, 12)
-    assert {r["name"]: (r["conditions"], r["wins"]) for r in rows} == {
-        "India Demo XI": ("Away", 40),
-        "Australia Demo XI": ("Away", 20),
+    assert {(r["name"], r["conditions"]): (r["matches"], r["wins"]) for r in rows} == {
+        ("India Demo XI", "Home"): (20, 0),
+        ("India Demo XI", "Away"): (40, 40),
+        ("Australia Demo XI", "Home"): (20, 0),
+        ("Australia Demo XI", "Away"): (40, 20),
     }
 
 
@@ -286,6 +288,10 @@ def test_minimum_partnership_and_quarter_eligibility(db):
             "DELETE FROM batting WHERE player_id=1 AND innings_id IN (SELECT id FROM innings WHERE match_id>4)"
         )
     assert all(r["batter1"] != "Aarav Demo" and r["batter2"] != "Aarav Demo" for r in query(db, 24))
+    # DNB does not erase participation; remove appearances to test the quarter minimum.
+    assert any(r["full_name"] == "Aarav Demo" for r in query(db, 25))
+    with connect(db) as c:
+        c.execute("DELETE FROM participants WHERE player_id=1 AND match_id>4")
     assert all(r["full_name"] != "Aarav Demo" for r in query(db, 25))
 
 
@@ -319,3 +325,46 @@ def test_fielding_only_player_has_no_invented_batting_or_bowling_bonus(db):
     assert r["batting_points"] == 0
     assert r["bowling_points"] == 0
     assert r["fielding_points"] == 11 and r["total_score"] == 11
+
+
+def test_yearly_runs_include_did_not_bat_appearances(db):
+    with connect(db) as c:
+        c.execute(
+            "DELETE FROM batting WHERE player_id=1 AND innings_id IN (SELECT id FROM innings WHERE match_id BETWEEN 5 AND 24)"
+        )
+    row = next(r for r in query(db, 16) if r["full_name"] == "Aarav Demo" and r["year"] == "2024")
+    assert row["matches"] == 24
+    assert row["average_runs_per_match"] == pytest.approx((40 + 42 + 44 + 46) / 24)
+
+
+def test_recent_form_uses_matches_not_test_innings(db):
+    with connect(db) as c:
+        c.execute("INSERT INTO innings VALUES(9999,58,3,1,100,1,60)")
+        c.execute("INSERT INTO batting VALUES(9999,1,1,100,60,1)")
+    row = named(query(db, 23))
+    assert row["performances"] == 10
+    assert row["last5_average"] == 174  # Five match totals; one Test has an extra 100.
+    assert row["last10_average"] == 159
+
+
+def test_quarter_changes_do_not_bridge_missing_quarters(db):
+    rows = [r for r in query(db, 25) if r["full_name"] == "Aarav Demo"]
+    assert rows[-1]["year"] == 2026 and rows[-1]["quarter"] == 4
+    assert rows[-1]["runs_change"] is None
+    assert rows[-1]["strike_rate_change"] is None
+    assert rows[-1]["quarter_trend"] == "Gap: no prior qualifying quarter"
+
+
+def test_yearly_eligible_status_is_shared_by_counts_and_runs(db):
+    with connect(db) as c:
+        c.execute("UPDATE matches SET status='Upcoming' WHERE id=1")
+        c.execute("UPDATE matches SET status='Abandoned' WHERE id=2")
+    row = next(r for r in query(db, 16) if r["full_name"] == "Aarav Demo" and r["year"] == "2024")
+    assert row["matches"] == 23
+    assert row["average_runs_per_match"] == pytest.approx((1512 - 40) / 23)
+
+
+def test_quarter_analysis_uses_explicit_recent_window(db):
+    with connect(db) as c:
+        c.execute("UPDATE matches SET match_date='2000-01-01' WHERE id<=48")
+    assert query(db, 25) == []  # Only two recent qualifying quarters remain.
