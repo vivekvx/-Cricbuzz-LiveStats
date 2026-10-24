@@ -110,3 +110,13 @@ def test_data_source_survives_navigation_across_all_modules(app_data):
     next(b for b in at.button if b.label == "Start demo with sample data").click().run()
     at.switch_page("pages/3_SQL_Analytics.py").run()
     assert at.sidebar.selectbox[0].value == "Sample Data"
+
+
+def test_player_page_chart_does_not_require_altair_import(app_data, monkeypatch):
+    import sys
+
+    monkeypatch.setitem(sys.modules, "altair", None)
+    at = AppTest.from_file(str(ROOT / "pages/2_Top_Player_Stats.py")).run()
+    assert not at.exception
+    assert len(at.get("arrow_vega_lite_chart")) == 1
+    assert any(h.value == "Compare players" for h in at.subheader)

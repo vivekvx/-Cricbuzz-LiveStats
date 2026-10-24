@@ -44,6 +44,8 @@ Axar's API Test runs (688) and ODI runs (918) agree with the [public Cricbuzz pr
 5. **Missing-data interpretation.** Live SQL warns when capacities, countries, outcomes, toss or fielding data are unavailable. Missing fielding is not presented as evidence of a complete overall ranking. Leaderboards explicitly describe imported scorecards, not worldwide or full-career rankings.
 6. **Legacy DNB rows and unknown roles.** Legacy scorecards now exclude did-not-bat entries just like current cards. Unknown player roles remain selectable as Unknown during editing, rather than silently defaulting to Batsman.
 
+7. **Hosted chart crash.** The deployed app uses Python 3.14. The player chart now uses a direct Vega-Lite specification to avoid an Altair schema-import failure observed in the hosted browser. CI covers both Python 3.11 and 3.14.
+
 ## Limits that remain
 
 Toss histories, fielding histories, complete represented-country metadata, series schedules and venue capacities are not automatically imported by the current UI. The captured match-information endpoint contained useful venue country/capacity fields; those are not yet an implemented enrichment flow. This is an adapter-coverage limit, not proof that the provider lacks the data. Queries requiring those fields can be incomplete and now disclose that fact.

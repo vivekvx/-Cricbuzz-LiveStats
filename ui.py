@@ -389,7 +389,22 @@ def player_stats():
     table(ranked.to_dict("records"), "player_leaderboard")
     chart = ranked.dropna(subset=[metric]).head(10).copy()
     chart["Player / format"] = chart["full_name"] + " / " + chart["format"]
-    st.bar_chart(chart, x="Player / format", y=metric, color="#16815c")
+    # A direct Vega-Lite spec avoids Altair's Python-version-specific schema imports.
+    st.vega_lite_chart(
+        chart,
+        {
+            "mark": {"type": "bar", "color": "#16815c"},
+            "encoding": {
+                "x": {"field": "Player / format", "type": "nominal", "sort": None},
+                "y": {"field": metric, "type": "quantitative"},
+                "tooltip": [
+                    {"field": "Player / format", "type": "nominal"},
+                    {"field": metric, "type": "quantitative"},
+                ],
+            },
+        },
+        width="stretch",
+    )
     st.subheader("Compare players")
     names = sorted(df["full_name"].unique())
     chosen = st.multiselect("Choose players", names, default=names[:2])

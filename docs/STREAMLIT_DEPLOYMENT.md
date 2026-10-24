@@ -53,7 +53,7 @@ For an academic demonstration, temporary SQLite storage is suitable and preserve
 
 ## Verification before publishing
 
-The GitHub Actions workflow in `.github/workflows/ci.yml` checks Python 3.11 on Ubuntu, pinned dependencies, all tests, code formatting and dependency compatibility without using the live key or network API calls. Local tests also cover Cloud-secrets loading, hosted-storage disclosure and six simultaneous first visitors.
+The GitHub Actions workflow in `.github/workflows/ci.yml` checks Python 3.11 and 3.14 on Ubuntu, pinned dependencies, all tests, code formatting and dependency compatibility without using the live key or network API calls. Local tests also cover Cloud-secrets loading, hosted-storage disclosure and six simultaneous first visitors.
 
 No runtime.txt, Dockerfile or packages.txt is needed. Python is selected explicitly in the deployment UI, following Streamlit's documented workflow.
 
